@@ -1,35 +1,89 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #e5e5e5;
   background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.layout {
   display: flex;
-  justify-content: center;
+  /*min-height: 100vh;*/
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+}
+
+.app-container {
+  /*text-align: center;*/
+  display: flex;
+  flex-direction: column;
+  /*height: 100vh;*/
+
+
+  height: 100%;
+  overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
+  margin: 0px;  /*removes default style*/
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #1fa758;
+  padding: 10px 20px;
+  /*display: flex;*/
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+header h2 {
+  margin: 0;
+}
+
+header span {
+  color: white;
+  width: 30px;
+}
+
+header span svg {
+  color: white;
+  fill: white;
+}
+
+h3 {
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #2ecc71;
+  font-size: 1rem;
+}
+
+button {
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: white;
+  font-size: 0.75rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+    margin: 0;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  width: 400px;
-  justify-content: space-evenly;
-  align-items: space-between;
+  max-width: 400px;
+  padding: 20px;
+  flex-grow: 1;
+  margin: 0 auto;
 }
 
 .inputRow {
@@ -39,11 +93,39 @@
   justify-content: space-evenly;
 }
 
-.App-intro {
-  font-size: large;
+.uk-button-default {
+  background-color: transparent;
+  color: #2ecc71;
+  border: 1px solid #e5e5e5;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.uk-button-primary {
+  background-color: #1fa758; /* 2ecc71 */
+  color: #e5e5e5;
+  border: 1px solid #2ecc71;
+  /*text-shadow: 1px 1px #188043;*/
+}
+
+.uk-input, .uk-input:focus, .uk-select, .uk-select:focus, .uk-textarea, .uk-textarea:focus {
+  background: #222;
+  color: #e5e5e5;
+  border: 1px solid #e5e5e5;
+}
+
+.uk-form-label {
+  color: #e5e5e5;
+}
+
+.uk-button-large {
+  margin-top: 20px;
+}
+
+.uk-button-disabled {
+  background-color: transparent;
+  color: #999;
+  border-color: #e5e5e5;
+}
+
+.uk-offcanvas-bar {
+  width: 100%;
 }
