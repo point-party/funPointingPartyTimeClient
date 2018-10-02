@@ -45,8 +45,7 @@ export class JoinRoom extends Component {
     const { room, name, observer } = this.state
 
     return (
-      <React.Fragment>
-
+      <div className="create-room-content">
         <h3>Join a Room</h3>
         <form className="uk-form-stacked">
           <div className="uk-margin">
@@ -105,7 +104,7 @@ export class JoinRoom extends Component {
             </button>
           </div>
         </form>
-      </React.Fragment>
+      </div>
     );
   }
 }

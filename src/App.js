@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './components/Home';
 import { CreateRoom } from './components/CreateRoom';
 import { JoinRoom } from './components/JoinRoom';
+import { Room } from './components/Room';
 import { Nav } from './components/Nav';
 import { Header } from './components/Header';
 import './App.css';
@@ -39,10 +40,11 @@ class App extends Component {
         <div className="app-container uk-offcanvas-content">
           <Header />
           <main>
-            <div className="content">
+            <div className="app-content">
               <Route exact path="/" component={Home} />
               <Route path="/join" component={JoinRoom} />
               <Route path="/create" component={CreateRoom} />
+              <Route path="/room" component={Room} />
             </div>
             <Nav />
           </main>
