@@ -19,6 +19,7 @@ export class CreateRoom extends Component {
 
   changeRole = (event) => {
     console.log('event', event)
+    event.stopPropagation()
     event.preventDefault()
     this.setState({
       observer: event.target.value
@@ -39,7 +40,7 @@ export class CreateRoom extends Component {
     const { room, name, observer } = this.state
 
     return (
-      <React.Fragment>
+      <div className="create-room-content">
         <h3>Create a Room</h3>
         <form className="uk-form-stacked">
           <div className="uk-margin">
@@ -76,12 +77,12 @@ export class CreateRoom extends Component {
           <div className="uk-margin">
             <label className="uk-form-label" htmlFor="form-stacked-select">Point Scale</label>
             <div className="uk-form-controls">
-              <select className="uk-select" id="form-stacked-select">
-                <option disabled selected value />
-                <option>Simple (0, 1, 2, 3)</option>
-                <option>Modified Fibonacci (0, ½, 1, 2 ... 100)</option>
-                <option>T-Shirt Sizes (XXS, XS ... XXL)</option>
-                <option>Custom...</option>
+              <select className="uk-select" id="form-stacked-select" defaultValue={0}>
+                <option disabled value={0} />
+                <option value={1}>Simple (0, 1, 2, 3)</option>
+                <option value={2}>Modified Fibonacci (0, ½, 1, 2 ... 100)</option>
+                <option value={3}>T-Shirt Sizes (XXS, XS ... XXL)</option>
+                <option disabled>Custom... (coming soon)</option>
               </select>
             </div>
           </div>
@@ -94,7 +95,7 @@ export class CreateRoom extends Component {
             </button>
           </div>
         </form>
-      </React.Fragment>
+      </div>
     );
   }
 }
