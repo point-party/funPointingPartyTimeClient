@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export class Home extends Component {
   render() {
     return (
-      <p uk-margin>
+      <p className="uk-margin">
         <Link to="/create">
           <button
             className="uk-button uk-button-default uk-button-large uk-width-1-1">

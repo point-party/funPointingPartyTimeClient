@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 export class CreateRoom extends Component {
   constructor(props) {
@@ -18,13 +18,13 @@ export class CreateRoom extends Component {
   }
 
   changeRole = (event) => {
-    console.log('event', event)
     event.preventDefault()
     this.setState({
       observer: event.target.value
     })
   }
 
+  // Currently linked to create room ->  this should be createRoom.
   joinRoom = () => {
     const { room, name, observer } = this.state
     if (room && name) {
@@ -39,7 +39,7 @@ export class CreateRoom extends Component {
     const { room, name, observer } = this.state
 
     return (
-      <React.Fragment>
+      <Fragment>
         <h3>Create a Room</h3>
         <form className="uk-form-stacked">
           <div className="uk-margin">
@@ -62,13 +62,13 @@ export class CreateRoom extends Component {
               <button
                 className={`uk-button-default uk-width-1-2 ${!observer ? 'uk-button' : 'uk-button uk-button-disabled' }`}
                 value={false}
-                onChange={this.changeRole}>
+                onClick={this.changeRole}>
                 Pointer
               </button>
               <button
                 className={`uk-button-default uk-width-1-2 ${observer ? 'uk-button' : 'uk-button uk-button-disabled' }`}
                 value={true}
-                onChange={this.changeRole}>
+                onClick={this.changeRole}>
                 Observer
               </button>
             </div>
@@ -77,10 +77,10 @@ export class CreateRoom extends Component {
             <label className="uk-form-label" htmlFor="form-stacked-select">Point Scale</label>
             <div className="uk-form-controls">
               <select className="uk-select" id="form-stacked-select">
-                <option disabled selected value />
-                <option>Simple (0, 1, 2, 3)</option>
-                <option>Modified Fibonacci (0, ½, 1, 2 ... 100)</option>
-                <option>T-Shirt Sizes (XXS, XS ... XXL)</option>
+                <option disabled defaultValue="simple" value />
+                <option key="simple">Simple (0, 1, 2, 3)</option>
+                <option key="fib">Modified Fibonacci (0, ½, 1, 2 ... 100)</option>
+                <option key="tshirt">T-Shirt Sizes (XXS, XS ... XXL)</option>
                 <option>Custom...</option>
               </select>
             </div>
@@ -94,7 +94,7 @@ export class CreateRoom extends Component {
             </button>
           </div>
         </form>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
