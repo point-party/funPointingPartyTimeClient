@@ -26,18 +26,18 @@ export class CreateRoom extends Component {
     })
   }
 
-  joinRoom = () => {
-    const { room, name, observer } = this.state
-    if (room && name) {
-      this.conn = new WebSocket(`ws://localhost:8080/joinRoom?room=${room}&name=${name}&observer=${observer}`)
-      this.conn.addEventListener('message', function (e) {
-        console.log('json', JSON.parse(e.data))
-      })
-    }
+  createRoom = (event) => {
+    event.preventDefault()
+    const { name, observer } = this.state
+        // edit backend to take in observer and name, and pointscale
+        return fetch(`http://localhost:8080/generateRoom?observer=${observer}&name=${name}`)
+          .then(res => res.json())
+          .then(({ roomName }) => this.setState({ displayRoomName: roomName }))
+          // probably redirect to room at this point.
   }
 
   render() {
-    const { room, name, observer } = this.state
+    const { name, observer } = this.state
 
     return (
       <div className="create-room-content">
@@ -63,13 +63,13 @@ export class CreateRoom extends Component {
               <button
                 className={`uk-button-default uk-width-1-2 ${!observer ? 'uk-button' : 'uk-button uk-button-disabled' }`}
                 value={false}
-                onChange={this.changeRole}>
+                onClick={this.changeRole}>
                 Pointer
               </button>
               <button
                 className={`uk-button-default uk-width-1-2 ${observer ? 'uk-button' : 'uk-button uk-button-disabled' }`}
                 value={true}
-                onChange={this.changeRole}>
+                onClick={this.changeRole}>
                 Observer
               </button>
             </div>
@@ -89,8 +89,8 @@ export class CreateRoom extends Component {
           <div className="uk-margin">
             <button
               className="uk-button uk-button-primary uk-button-large  uk-width-1-1"
-              disabled={!name || !room}
-              onClick={this.joinRoom}>
+              disabled={!name}
+              onClick={this.createRoom}>
               Create
             </button>
           </div>
