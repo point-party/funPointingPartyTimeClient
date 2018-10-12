@@ -7,6 +7,7 @@ import { JoinRoom } from './components/JoinRoom';
 import { Room } from './components/Room';
 import { Nav } from './components/Nav';
 import { Header } from './components/Header';
+import SocketConnection from './sockets/SocketConnection';
 import './App.css';
 // import Button from '@material-ui/core/Button';
 import UIkit from 'uikit';
@@ -19,6 +20,12 @@ UIkit.use(Icons);
 // UIkit.notification('Hello world.');
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {socketConnection: new SocketConnection()};
+  }
+
   sendStuff = () => {
     const example = {
       event: "Something",
@@ -35,6 +42,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('this.state.socketConnection', this.state.socketConnection)
     return (
       <Router>
         <div className="app-container uk-offcanvas-content">
@@ -42,9 +50,9 @@ class App extends Component {
           <main>
             <div className="app-content">
               <Route exact path="/" component={Home} />
-              <Route path="/join" component={JoinRoom} />
-              <Route path="/create" component={CreateRoom} />
-              <Route path="/room" component={Room} />
+              <Route path="/join" render={ (props) => <JoinRoom {...props} socketConnection={this.state.socketConnection} /> } />
+              <Route path="/create" render={ (props) => <CreateRoom {...props} socketConnection={this.state.socketConnection}/> } />
+              <Route path="/room" render={ (props) => <Room {...props} socketConnection={this.state.socketConnection}/> } />
             </div>
             <Nav />
           </main>

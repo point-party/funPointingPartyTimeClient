@@ -26,48 +26,52 @@ export class CreateRoom extends Component {
     })
   }
 
+  joinRoom = (roomName, playerName, observer) => {
+    const { socketConnection } = this.props;
+    socketConnection.joinRoom(roomName, playerName, observer);
+    this.props.history.push(`/room/${roomName}`)
+  }
+
   createRoom = (event) => {
     event.preventDefault()
     const { name, observer } = this.state
-        // edit backend to take in observer and name, and pointscale
-        return fetch(`http://localhost:8080/generateRoom?observer=${observer}&name=${name}`)
-          .then(res => res.json())
-          .then(({ roomName }) => this.setState({ displayRoomName: roomName }))
-          // probably redirect to room at this point.
+    // edit backend to take in observer and name, and pointscale
+    return fetch(`http://localhost:8080/generateRoom?observer=${observer}&name=${name}`)
+      .then(res => res.json())
+      .then(({ roomName }) => this.joinRoom(roomName, name, observer))
   }
 
   render() {
     const { name, observer } = this.state
-
     return (
       <div className="create-room-content">
         <h3>Create a Room</h3>
         <form className="uk-form-stacked">
           <div className="uk-margin">
             <label className="uk-form-label"
-                   htmlFor="form-stacked-text">Name</label>
+              htmlFor="form-stacked-text">Name</label>
             <div className="uk-form-controls">
               <input className="uk-input"
-                     id="form-stacked-text"
-                     type="text"
-                     value={name}
-                     onChange={this.changeName}
-                     placeholder="" />
+                id="form-stacked-text"
+                type="text"
+                value={name}
+                onChange={this.changeName}
+                placeholder="" />
             </div>
           </div>
           <div className="uk-margin">
             <label className="uk-form-label"
-                   htmlFor="form-stacked-text">Role</label>
+              htmlFor="form-stacked-text">Role</label>
             <div
               className="uk-button-group uk-width-1-1">
               <button
-                className={`uk-button-default uk-width-1-2 ${!observer ? 'uk-button' : 'uk-button uk-button-disabled' }`}
+                className={`uk-button-default uk-width-1-2 ${!observer ? 'uk-button' : 'uk-button uk-button-disabled'}`}
                 value={false}
                 onClick={this.changeRole}>
                 Pointer
               </button>
               <button
-                className={`uk-button-default uk-width-1-2 ${observer ? 'uk-button' : 'uk-button uk-button-disabled' }`}
+                className={`uk-button-default uk-width-1-2 ${observer ? 'uk-button' : 'uk-button uk-button-disabled'}`}
                 value={true}
                 onClick={this.changeRole}>
                 Observer
