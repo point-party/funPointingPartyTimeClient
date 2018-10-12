@@ -7,47 +7,28 @@ export class Room extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      pointers: [{
-        name: "Will",
-        points: 1,
-      }, {
-        name: "Laney",
-        points: 2,
-      }, {
-        name: "Quincy",
-        points: null,
-      }, {
-        name: "Alice",
-        points: 4,
-      }, {
-        name: "Lucy",
-        points: null,
-      }, {
-        name: "Someone Else",
-        points: 3,
-      }, {
-        name: "Stas",
-        points: 8,
-      }, {
-        name: "Ricardo",
-        points: 3,
-      }, {
-        name: "Chris",
-        points: 10,
-      }, {
-        name: "Mikkel",
-        points: 1,
-      }, {
-        name: "Mike",
-        points: 15,
-      }],
-      observers: ["jkl", "mno", "pqr"],
+      pointers: [],
+      observers: [],
       room: "621QKO",
       showPoints: false,
       points: null,
       voted: false,
       view: POINTERS,
     }
+  }
+
+  componentDidMount() {
+    const { socketConnection } = this.props;
+    const functionToFire = this.decideAction;
+    socketConnection.conn.addEventListener('message', (e) => {
+      const data = JSON.parse(e.data);
+      functionToFire(data);
+    })
+  }
+
+  componentDidUnmount() {
+    const { socketConnection } = this.props;
+    socketConnection.close();
   }
 
   toggleView = (value) => {
@@ -58,15 +39,35 @@ export class Room extends Component {
     this.setState({ points })
   }
 
+  decideAction = (data) => {
+    console.log('data', data);
+    if (data.event === 'player joined') {
+      console.log('got in here');
+      this.setState({ pointers: data.players })
+    }
+    if (data.event === 'voted') {
+      this.setState((prevState) => ({ 
+        ...prevState.pointers,
+        [data.name]: data.point
+       }))
+    }
+  }
+
   vote = () => {
+    console.log('this.props.socketConnection', this.props.socketConnection)
+    const { socketConnection} = this.props;
+    socketConnection.send("voted", this.state.points)
     this.setState((prevState) => ({ voted: !prevState.voted }))
   }
 
   render() {
+    const { socketConnection } = this.props;
+    console.log('this.state.pointers', this.state.pointers);
+    console.log('socketConnection', socketConnection);
     const { showPoints, pointers, observers, points, voted, view } = this.state
     const pointersView = pointers.map(pointer => <div className="pointer-row" key={pointer.name}>
       <span>{pointer.name}</span>
-      <span>{showPoints ? pointer.points : (pointer.points ? <span uk-icon="check" /> : "")}</span>
+      <span>{showPoints ? pointer.point : (pointer.point ? <span uk-icon="check" /> : "")}</span>
     </div>)
     const observersView = observers.map(obs => <div className="pointer-row" key={obs}>
       <span>{obs}</span>

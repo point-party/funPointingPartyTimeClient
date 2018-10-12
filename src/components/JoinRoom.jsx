@@ -38,6 +38,7 @@ export class JoinRoom extends Component {
       this.conn.addEventListener('message', function (e) {
         console.log('json', JSON.parse(e.data))
       })
+      this.props.history.push(`/room/${room}`)
     }
   }
 
