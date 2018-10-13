@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { JOIN_ROOM, VOTED } from '../sockets/SocketConnection';
 
 const POINTERS = 'pointers';
 const OBSERVERS = 'observers';
@@ -10,7 +11,7 @@ export class Room extends Component {
       pointers: [],
       observers: [],
       room: "621QKO",
-      showPoints: false,
+      showPoints: true,
       points: null,
       voted: false,
       view: POINTERS,
@@ -20,13 +21,15 @@ export class Room extends Component {
   componentDidMount() {
     const { socketConnection } = this.props;
     const functionToFire = this.decideAction;
-    socketConnection.conn.addEventListener('message', (e) => {
-      const data = JSON.parse(e.data);
-      functionToFire(data);
-    })
+    if (socketConnection.conn) {
+      socketConnection.conn.addEventListener('message', (e) => {
+        const data = JSON.parse(e.data);
+        functionToFire(data);
+      })
+    }
   }
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     const { socketConnection } = this.props;
     socketConnection.close();
   }
@@ -41,14 +44,13 @@ export class Room extends Component {
 
   decideAction = (data) => {
     console.log('data', data);
-    if (data.event === 'player joined') {
-      console.log('got in here');
-      this.setState({ pointers: data.players })
+    if (data.event === JOIN_ROOM) {
+      this.setState({ pointers: data.payload.players })
     }
-    if (data.event === 'voted') {
-      this.setState((prevState) => ({ 
-        ...prevState.pointers,
-        [data.name]: data.point
+    if (data.event === VOTED) {
+      this.setState((prevState) => ({
+        ...prevState, 
+        pointers: updatePlayersPoints(prevState.pointers, data.payload)
        }))
     }
   }
@@ -56,13 +58,12 @@ export class Room extends Component {
   vote = () => {
     console.log('this.props.socketConnection', this.props.socketConnection)
     const { socketConnection} = this.props;
-    socketConnection.send("voted", this.state.points)
+    socketConnection.send(VOTED, this.state.points)
     this.setState((prevState) => ({ voted: !prevState.voted }))
   }
 
   render() {
     const { socketConnection } = this.props;
-    console.log('this.state.pointers', this.state.pointers);
     console.log('socketConnection', socketConnection);
     const { showPoints, pointers, observers, points, voted, view } = this.state
     const pointersView = pointers.map(pointer => <div className="pointer-row" key={pointer.name}>
@@ -98,11 +99,11 @@ export class Room extends Component {
                     <div className="uk-position-center uk-panel"><h1>{value}</h1></div>
                   </li>)}
                 </ul>
-                <a className="uk-position-center-left uk-position-small" href="#" uk-slidenav-previous
+                <a className="uk-position-center-left uk-position-small" href="#" uk-slidenav-previous="true"
                    uk-slider-item="previous">
                   <span uk-icon="icon: chevron-left; ratio: 1.5" />
                 </a>
-                <a className="uk-position-center-right uk-position-small" href="#" uk-slidenav-next
+                <a className="uk-position-center-right uk-position-small" href="#" uk-slidenav-next="true"
                    uk-slider-item="next">
                   <span uk-icon="icon: chevron-right; ratio: 1.5" />
                 </a>
@@ -122,4 +123,13 @@ export class Room extends Component {
       </div>
     );
   }
+}
+
+const updatePlayersPoints = (players, update) => {
+  return players.map((player) => {
+    if (player.name === update.name) {
+      player.point = update.point
+    }
+    return player;
+  });
 }
