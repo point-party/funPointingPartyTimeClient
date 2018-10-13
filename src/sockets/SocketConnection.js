@@ -3,6 +3,7 @@ export const LEAVE_ROOM = 'LEAVE_ROOM';
 export const SUBMIT_POINT = 'SUBMIT_POINT';
 export const REVEAL_POINTS = 'REVEAL_POINTS';
 export const CLEAR_POINTS = 'CLEAR_POINTS';
+export const VOTED = 'VOTED';
 
 export default class SocketConnection {
     constructor() {
@@ -18,22 +19,20 @@ export default class SocketConnection {
     }
 
     send = (event, point) => {
-        const payload = {
-            event,
-            point: point.toString(),
-            name: this.name,
-            players: [],
+        if (this.conn) {
+            const payload = {
+                event,
+                payload: {
+                    point: point.toString(),
+                    name: this.name,
+                }
+            }
+            this.conn.send(JSON.stringify(payload))
         }
-        this.conn.send(JSON.stringify(payload))
     }
 
-    close = (event, point) => {
-        const payload = {
-            event,
-            point: point.toString(),
-            name: this.name,
-            players: [],
-        }
-        this.conn.send(JSON.stringify(payload))
+    close = () => {
+        console.log('Going to close!')
+        this.conn.close();
     }
 }

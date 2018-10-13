@@ -33,13 +33,9 @@ export class JoinRoom extends Component {
 
   joinRoom = () => {
     const { room, name, observer } = this.state
-    if (room && name) {
-      this.conn = new WebSocket(`ws://localhost:8080/joinRoom?room=${room}&name=${name}&observer=${observer}`)
-      this.conn.addEventListener('message', function (e) {
-        console.log('json', JSON.parse(e.data))
-      })
-      this.props.history.push(`/room/${room}`)
-    }
+    const { socketConnection } = this.props;
+    socketConnection.joinRoom(room, name, observer);
+    this.props.history.push(`/room/${room}`)
   }
 
   render() {
