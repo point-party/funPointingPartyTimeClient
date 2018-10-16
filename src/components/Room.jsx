@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { JOIN_ROOM, VOTED } from '../sockets/SocketConnection';
+import { JOIN_ROOM, VOTED, CLEAR_POINTS } from '../sockets/SocketConnection';
+import { Nav } from './Nav';
 
 const POINTERS = 'pointers';
 const OBSERVERS = 'observers';
@@ -11,7 +12,7 @@ export class Room extends Component {
       pointers: [],
       observers: [],
       room: "621QKO",
-      showPoints: true,
+      showPoints: false,
       points: null,
       voted: false,
       view: POINTERS,
@@ -60,6 +61,19 @@ export class Room extends Component {
     const { socketConnection} = this.props;
     socketConnection.send(VOTED, this.state.points)
     this.setState((prevState) => ({ voted: !prevState.voted }))
+  }
+
+  revealPoints = () => {
+    console.log('revealing points...')
+    this.setState({ showPoints: true })
+  }
+
+  clearPoints = () => {
+    console.log('clearing points...')
+    // const { socketConnection} = this.props;
+    // socketConnection.send(CLEAR_POINTS, null)
+    // not sure what the payload should be here, if any
+    this.setState({ showPoints: false })
   }
 
   render() {
@@ -114,12 +128,16 @@ export class Room extends Component {
 
         <div className="room-content--bottom">
           <button
-            className="uk-button uk-button-primary uk-button-large  uk-width-1-1"
+            className="uk-button uk-button-default uk-button-large  uk-width-1-1"
             disabled={!points}
             onClick={this.vote}>
             {!voted ? 'Submit' : 'Change Vote'}
           </button>
         </div>
+      <Nav
+        revealPointsAction={this.revealPoints}
+        clearPointsAction={this.clearPoints}
+      />
       </div>
     );
   }
