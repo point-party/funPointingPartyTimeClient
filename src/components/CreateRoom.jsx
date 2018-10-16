@@ -7,7 +7,7 @@ export class CreateRoom extends Component {
       name: "",
       room: "",
       displayRoomName: "",
-      observer: false,
+      observer: "false",
     }
   }
 
@@ -18,7 +18,6 @@ export class CreateRoom extends Component {
   }
 
   changeRole = (event) => {
-    console.log('event', event)
     event.stopPropagation()
     event.preventDefault()
     this.setState({
@@ -43,10 +42,11 @@ export class CreateRoom extends Component {
 
   render() {
     const { name, observer } = this.state
+    let buttonClasses = 'uk-button-default uk-width-1-2 uk-button uk-button-toggle';
     return (
       <div className="create-room-content">
         <h3>Create a Room</h3>
-        <form className="uk-form-stacked">
+        <form autoComplete="off" className="uk-form-stacked">
           <div className="uk-margin">
             <label className="uk-form-label"
               htmlFor="form-stacked-text">Name</label>
@@ -62,17 +62,16 @@ export class CreateRoom extends Component {
           <div className="uk-margin">
             <label className="uk-form-label"
               htmlFor="form-stacked-text">Role</label>
-            <div
-              className="uk-button-group uk-width-1-1">
+            <div className="uk-button-group uk-width-1-1">
               <button
-                className={`uk-button-default uk-width-1-2 ${!observer ? 'uk-button' : 'uk-button uk-button-disabled'}`}
-                value={false}
+                className={observer === "false" ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses}
+                value="false"
                 onClick={this.changeRole}>
                 Pointer
               </button>
               <button
-                className={`uk-button-default uk-width-1-2 ${observer ? 'uk-button' : 'uk-button uk-button-disabled'}`}
-                value={true}
+                className={observer === "true" ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses}
+                value="true"
                 onClick={this.changeRole}>
                 Observer
               </button>
@@ -81,8 +80,7 @@ export class CreateRoom extends Component {
           <div className="uk-margin">
             <label className="uk-form-label" htmlFor="form-stacked-select">Point Scale</label>
             <div className="uk-form-controls">
-              <select className="uk-select" id="form-stacked-select" defaultValue={0}>
-                <option disabled value={0} />
+              <select className="uk-select" id="form-stacked-select" defaultValue={1}>
                 <option value={1}>Simple (0, 1, 2, 3)</option>
                 <option value={2}>Modified Fibonacci (0, ½, 1, 2 ... 100)</option>
                 <option value={3}>T-Shirt Sizes (XXS, XS ... XXL)</option>
@@ -92,7 +90,7 @@ export class CreateRoom extends Component {
           </div>
           <div className="uk-margin">
             <button
-              className="uk-button uk-button-primary uk-button-large  uk-width-1-1"
+              className="uk-button uk-button-default uk-button-large uk-width-1-1"
               disabled={!name}
               onClick={this.createRoom}>
               Create

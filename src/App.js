@@ -5,7 +5,6 @@ import { Home } from './components/Home';
 import { CreateRoom } from './components/CreateRoom';
 import { JoinRoom } from './components/JoinRoom';
 import { Room } from './components/Room';
-import { Nav } from './components/Nav';
 import { Header } from './components/Header';
 import SocketConnection from './sockets/SocketConnection';
 import './App.css';
@@ -13,11 +12,7 @@ import './App.css';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 
-// loads the Icon plugin
 UIkit.use(Icons);
-
-// components can be called from the imported UIkit reference
-// UIkit.notification('Hello world.');
 
 class App extends Component {
 
@@ -54,7 +49,6 @@ class App extends Component {
               <Route path="/create" render={ (props) => <CreateRoom {...props} socketConnection={this.state.socketConnection}/> } />
               <Route path="/room" render={ (props) => <Room {...props} socketConnection={this.state.socketConnection}/> } />
             </div>
-            <Nav />
           </main>
         </div>
       </Router>
