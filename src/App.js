@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Home } from './components/Home';
 import { CreateRoom } from './components/CreateRoom';
-import { JoinRoom } from './components/JoinRoom';
+import JoinRoom from './components/JoinRoom';
 import { Room } from './components/Room';
 import { Header } from './components/Header';
 import SocketConnection from './sockets/SocketConnection';
