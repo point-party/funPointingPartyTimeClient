@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 
-export default function JoinRoom(props) {
+export default function JoinRoom({ socketConnection, history }) {
   const name = useFormInput('');
   const room = useFormInput('');
   const isObserver = useFormInput('false');
 
   const joinRoom = () => {
-    const { socketConnection } = props;
     socketConnection.joinRoom(room.value, name.value, isObserver.value);
-    this.props.history.push(`/room/${room.value}`)
+    history.push(`/room/${room.value}`)
   }
 
   return (

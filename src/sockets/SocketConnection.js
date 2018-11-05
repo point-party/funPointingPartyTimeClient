@@ -32,7 +32,8 @@ export default class SocketConnection {
     }
 
     close = () => {
-        console.log('Going to close!')
-        this.conn.close();
+        if (this.conn) {
+            this.conn.close();
+        }
     }
 }
