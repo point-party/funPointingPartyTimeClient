@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { JOIN_ROOM, VOTED, CLEAR_POINTS } from '../sockets/SocketConnection';
+import { JOIN_ROOM, VOTED, CLEAR_POINTS, REVEAL_POINTS } from '../sockets/SocketConnection';
 import { Nav } from './Nav';
 
 const POINTERS = 'pointers';
@@ -54,10 +54,18 @@ export class Room extends Component {
         pointers: updatePlayersPoints(prevState.pointers, data.payload)
        }))
     }
+    if (data.event === CLEAR_POINTS) {
+      this.setState((prevState) => ({
+        ...prevState, 
+        pointers: clearPlayersPoints(prevState.pointers)
+       }))
+    }
+    if (data.event === REVEAL_POINTS) {
+      this.setState({ showPoints: true })
+    }
   }
 
   vote = () => {
-    console.log('this.props.socketConnection', this.props.socketConnection)
     const { socketConnection} = this.props;
     socketConnection.send(VOTED, this.state.points)
     this.setState((prevState) => ({ voted: !prevState.voted }))
@@ -65,13 +73,15 @@ export class Room extends Component {
 
   revealPoints = () => {
     console.log('revealing points...')
+    const { socketConnection} = this.props;
+    socketConnection.send(REVEAL_POINTS)
     this.setState({ showPoints: true })
   }
 
   clearPoints = () => {
     console.log('clearing points...')
-    // const { socketConnection} = this.props;
-    // socketConnection.send(CLEAR_POINTS, null)
+    const { socketConnection} = this.props;
+    socketConnection.send(CLEAR_POINTS);
     // not sure what the payload should be here, if any
     this.setState({ showPoints: false })
   }
@@ -150,4 +160,13 @@ const updatePlayersPoints = (players, update) => {
     }
     return player;
   });
+}
+
+const clearPlayersPoints = (players) => {
+  return players.map((player) => {
+    return {
+      ...player,
+      point: "",
+    }
+  })
 }

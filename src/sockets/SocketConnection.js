@@ -20,11 +20,18 @@ export default class SocketConnection {
 
     send = (event, point) => {
         if (this.conn) {
-            const payload = {
-                event,
-                payload: {
-                    point: point.toString(),
-                    name: this.name,
+            let payload;
+            if (point) {
+                payload = {
+                    event,
+                    payload: {
+                        point: point.toString(),
+                        name: this.name,
+                    }
+                }
+            } else {
+                payload = {
+                    event,
                 }
             }
             this.conn.send(JSON.stringify(payload))
