@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 export class Header extends Component {
   render() {
     const { pathname } = window.location;
+    let roomName;
+    if (pathname.includes('room')) {
+      roomName = pathname.split('/')[2];
+      console.log('roomName', roomName);
+    }
     return (
       <header>
         {pathname !== '/' ? (
@@ -13,7 +18,7 @@ export class Header extends Component {
         ) : (
           <span />
         )}
-        <h2>Point It</h2>
+        <h2>{roomName ? `Room: ${roomName}` : `Point It`}</h2>
         {pathname !== '/' && pathname !== '/create' ? (
           <span uk-toggle="target: #offcanvas-nav" uk-icon="icon: menu; ratio: 1.5" />
         ) : (
