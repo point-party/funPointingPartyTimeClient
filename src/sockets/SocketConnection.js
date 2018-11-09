@@ -1,4 +1,6 @@
 import { createId } from '../utils/uuid';
+import { getApiUrl } from '../utils/api';
+const API_URL = getApiUrl();
 
 export const JOIN_ROOM = 'JOIN_ROOM';
 export const LEAVE_ROOM = 'LEAVE_ROOM';
@@ -17,7 +19,7 @@ export default class SocketConnection {
   joinRoom = (roomName, playerName, observer) => {
     if (roomName && playerName) {
       this.conn = new WebSocket(
-        `ws://localhost:8080/joinRoom?room=${roomName}&name=${playerName}&observer=${observer}&id=${
+        `wss://${API_URL}/joinRoom?room=${roomName}&name=${playerName}&observer=${observer}&id=${
           this.id
         }`
       );

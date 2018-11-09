@@ -10,7 +10,8 @@ import SocketConnection from './sockets/SocketConnection';
 import './App.css';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
-
+import { getApiUrl } from './utils/api';
+const API_URL = getApiUrl();
 UIkit.use(Icons);
 
 class App extends Component {
@@ -20,11 +21,10 @@ class App extends Component {
   }
 
   componentWillMount() {
-    return fetch('http://localhost:8080/wakeup').then(() => console.log('server is awake'));
+    return fetch(`https://${API_URL}/wakeup`).then(() => console.log('server is awake'));
   }
 
   render() {
-    console.log('this.state.socketConnection', this.state.socketConnection);
     return (
       <Router>
         <div className="app-container uk-offcanvas-content">

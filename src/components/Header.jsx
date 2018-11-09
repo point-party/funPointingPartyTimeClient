@@ -7,7 +7,6 @@ export class Header extends Component {
     let roomName;
     if (pathname.includes('room')) {
       roomName = pathname.split('/')[2];
-      console.log('roomName', roomName);
     }
     return (
       <header>
