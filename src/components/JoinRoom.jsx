@@ -7,17 +7,15 @@ export default function JoinRoom({ socketConnection, history }) {
 
   const joinRoom = () => {
     socketConnection.joinRoom(room.value, name.value, isObserver.value);
-    history.push(`/room/${room.value}`)
-  }
+    history.push(`/room/${room.value}`);
+  };
 
   return (
     <div className="create-room-content">
       <h3>Join a Room</h3>
       <form className="uk-form-stacked">
         <div className="uk-margin">
-          <label
-            className="uk-form-label"
-            htmlFor="form-stacked-text">
+          <label className="uk-form-label" htmlFor="form-stacked-text">
             Room #
           </label>
           <div className="uk-form-controls">
@@ -26,35 +24,45 @@ export default function JoinRoom({ socketConnection, history }) {
               className="uk-input"
               id="form-stacked-text"
               type="text"
-              placeholder="" />
+              placeholder=""
+            />
           </div>
         </div>
         <div className="uk-margin">
-          <label className="uk-form-label"
-                 htmlFor="form-stacked-text">Name</label>
+          <label className="uk-form-label" htmlFor="form-stacked-text">
+            Name
+          </label>
           <div className="uk-form-controls">
-            <input className="uk-input"
-                   {...name}
-                   id="form-stacked-text"
-                   type="text"
-                   placeholder="" />
+            <input
+              className="uk-input"
+              {...name}
+              id="form-stacked-text"
+              type="text"
+              placeholder=""
+            />
           </div>
         </div>
         <div className="uk-margin">
-          <label className="uk-form-label"
-                 htmlFor="form-stacked-text">Role</label>
-          <div
-            className="uk-button-group uk-width-1-1">
+          <label className="uk-form-label" htmlFor="form-stacked-text">
+            Role
+          </label>
+          <div className="uk-button-group uk-width-1-1">
             <button
-              className={`uk-button-default uk-width-1-2 ${isObserver.value === 'false' ? 'uk-button' : 'uk-button uk-button-disabled' }`}
+              className={`uk-button-default uk-width-1-2 ${
+                isObserver.value === 'false' ? 'uk-button' : 'uk-button uk-button-disabled'
+              }`}
               value={false}
-              onClick={isObserver.onChange}>
+              onClick={isObserver.onChange}
+            >
               Pointer
             </button>
             <button
-              className={`uk-button-default uk-width-1-2 ${isObserver.value === 'true' ? 'uk-button' : 'uk-button uk-button-disabled' }`}
+              className={`uk-button-default uk-width-1-2 ${
+                isObserver.value === 'true' ? 'uk-button' : 'uk-button uk-button-disabled'
+              }`}
               value={true}
-              onClick={isObserver.onChange}>
+              onClick={isObserver.onChange}
+            >
               Observer
             </button>
           </div>
@@ -63,7 +71,8 @@ export default function JoinRoom({ socketConnection, history }) {
           <button
             className="uk-button uk-button-primary uk-button-large  uk-width-1-1"
             disabled={!name.value || !room.value}
-            onClick={joinRoom}>
+            onClick={joinRoom}
+          >
             Join
           </button>
         </div>
@@ -74,13 +83,13 @@ export default function JoinRoom({ socketConnection, history }) {
 
 function useFormInput(initialValue) {
   const [value, setValue] = useState(initialValue);
-  const handleChange = (event) => {
+  const handleChange = event => {
     event.preventDefault();
     setValue(event.target.value);
-  }
+  };
 
   return {
     value,
     onChange: handleChange,
-  }
+  };
 }

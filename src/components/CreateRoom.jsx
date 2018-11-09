@@ -2,83 +2,99 @@ import React, { Component } from 'react';
 
 export class CreateRoom extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      name: "",
-      room: "",
-      displayRoomName: "",
-      observer: "false",
-    }
+      name: '',
+      room: '',
+      displayRoomName: '',
+      observer: 'false',
+    };
   }
 
-  changeName = (event) => {
+  changeName = event => {
     this.setState({
-      name: event.target.value
-    })
-  }
+      name: event.target.value,
+    });
+  };
 
-  changeRole = (event) => {
-    event.stopPropagation()
-    event.preventDefault()
+  changeRole = event => {
+    event.stopPropagation();
+    event.preventDefault();
     this.setState({
-      observer: event.target.value
-    })
-  }
+      observer: event.target.value,
+    });
+  };
 
   joinRoom = (roomName, playerName, observer) => {
     const { socketConnection } = this.props;
     socketConnection.joinRoom(roomName, playerName, observer);
-    this.props.history.push(`/room/${roomName}`)
-  }
+    this.props.history.push(`/room/${roomName}`);
+  };
 
-  createRoom = (event) => {
-    event.preventDefault()
-    const { name, observer } = this.state
+  createRoom = event => {
+    event.preventDefault();
+    const { name, observer } = this.state;
     // edit backend to take in observer and name, and pointscale
     return fetch(`http://localhost:8080/generateRoom?observer=${observer}&name=${name}`)
       .then(res => res.json())
-      .then(({ roomName }) => this.joinRoom(roomName, name, observer))
-  }
+      .then(({ roomName }) => this.joinRoom(roomName, name, observer));
+  };
 
   render() {
-    const { name, observer } = this.state
+    const { name, observer } = this.state;
     let buttonClasses = 'uk-button-default uk-width-1-2 uk-button uk-button-toggle';
     return (
       <div className="create-room-content">
         <h3>Create a Room</h3>
         <form autoComplete="off" className="uk-form-stacked">
           <div className="uk-margin">
-            <label className="uk-form-label"
-              htmlFor="form-stacked-text">Name</label>
+            <label className="uk-form-label" htmlFor="form-stacked-text">
+              Name
+            </label>
             <div className="uk-form-controls">
-              <input className="uk-input"
+              <input
+                className="uk-input"
                 id="form-stacked-text"
                 type="text"
                 value={name}
                 onChange={this.changeName}
-                placeholder="" />
+                placeholder=""
+              />
             </div>
           </div>
           <div className="uk-margin">
-            <label className="uk-form-label"
-              htmlFor="form-stacked-text">Role</label>
+            <label className="uk-form-label" htmlFor="form-stacked-text">
+              Role
+            </label>
             <div className="uk-button-group uk-width-1-1">
               <button
-                className={observer === "false" ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses}
+                className={
+                  observer === 'false'
+                    ? `${buttonClasses} uk-button-toggle--selected`
+                    : buttonClasses
+                }
                 value="false"
-                onClick={this.changeRole}>
+                onClick={this.changeRole}
+              >
                 Pointer
               </button>
               <button
-                className={observer === "true" ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses}
+                className={
+                  observer === 'true'
+                    ? `${buttonClasses} uk-button-toggle--selected`
+                    : buttonClasses
+                }
                 value="true"
-                onClick={this.changeRole}>
+                onClick={this.changeRole}
+              >
                 Observer
               </button>
             </div>
           </div>
           <div className="uk-margin">
-            <label className="uk-form-label" htmlFor="form-stacked-select">Point Scale</label>
+            <label className="uk-form-label" htmlFor="form-stacked-select">
+              Point Scale
+            </label>
             <div className="uk-form-controls">
               <select className="uk-select" id="form-stacked-select" defaultValue={1}>
                 <option value={1}>Simple (0, 1, 2, 3)</option>
@@ -92,7 +108,8 @@ export class CreateRoom extends Component {
             <button
               className="uk-button uk-button-default uk-button-large uk-width-1-1"
               disabled={!name}
-              onClick={this.createRoom}>
+              onClick={this.createRoom}
+            >
               Create
             </button>
           </div>

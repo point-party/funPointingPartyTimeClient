@@ -1,26 +1,31 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import UIkit from 'uikit';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-export const Nav = (props) => {
-  const { revealPointsAction, clearPointsAction } = props
+export const Nav = props => {
+  const { revealPointsAction, clearPointsAction, leaveRoomAction } = props;
 
   const closeNav = () => {
-    UIkit.offcanvas('#offcanvas-nav').hide()
-  }
+    UIkit.offcanvas('#offcanvas-nav').hide();
+  };
 
   const revealPoints = () => {
-    revealPointsAction()
-    closeNav()
-  }
+    revealPointsAction();
+    closeNav();
+  };
 
   const clearPoints = () => {
-    clearPointsAction()
-    closeNav()
-  }
+    clearPointsAction();
+    closeNav();
+  };
+
+  const leaveRoom = () => {
+    leaveRoomAction();
+    closeNav();
+  };
 
   return (
     <div id="offcanvas-nav" uk-offcanvas="flip: true; overlay: true">
@@ -36,7 +41,7 @@ export const Nav = (props) => {
             Clear Points
           </li>
           <Link to="/">
-            <li onClick={closeNav}>
+            <li onClick={leaveRoom}>
               <ExitToAppIcon className="uk-margin-small-right" />
               Leave Room
             </li>
@@ -45,4 +50,4 @@ export const Nav = (props) => {
       </div>
     </div>
   );
-}
+};

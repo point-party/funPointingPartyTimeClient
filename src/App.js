@@ -8,36 +8,23 @@ import { Room } from './components/Room';
 import { Header } from './components/Header';
 import SocketConnection from './sockets/SocketConnection';
 import './App.css';
-// import Button from '@material-ui/core/Button';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 
 UIkit.use(Icons);
 
 class App extends Component {
-
   constructor() {
     super();
-    this.state = {socketConnection: new SocketConnection()};
-  }
-
-  sendStuff = () => {
-    const example = {
-      event: "Something",
-      name: this.state.name,
-      point: 1
-    }
-    const messageToSend = JSON.stringify(example)
-    console.log('messageToSend', messageToSend)
-    this.conn.send(messageToSend)
+    this.state = { socketConnection: new SocketConnection() };
   }
 
   componentWillMount() {
-    return fetch('http://localhost:8080/wakeup').then(() => console.log('server is awake'))
+    return fetch('http://localhost:8080/wakeup').then(() => console.log('server is awake'));
   }
 
   render() {
-    console.log('this.state.socketConnection', this.state.socketConnection)
+    console.log('this.state.socketConnection', this.state.socketConnection);
     return (
       <Router>
         <div className="app-container uk-offcanvas-content">
@@ -45,9 +32,22 @@ class App extends Component {
           <main>
             <div className="app-content">
               <Route exact path="/" component={Home} />
-              <Route path="/join" render={ (props) => <JoinRoom {...props} socketConnection={this.state.socketConnection} /> } />
-              <Route path="/create" render={ (props) => <CreateRoom {...props} socketConnection={this.state.socketConnection}/> } />
-              <Route path="/room" render={ (props) => <Room {...props} socketConnection={this.state.socketConnection}/> } />
+              <Route
+                path="/join"
+                render={props => (
+                  <JoinRoom {...props} socketConnection={this.state.socketConnection} />
+                )}
+              />
+              <Route
+                path="/create"
+                render={props => (
+                  <CreateRoom {...props} socketConnection={this.state.socketConnection} />
+                )}
+              />
+              <Route
+                path="/room"
+                render={props => <Room {...props} socketConnection={this.state.socketConnection} />}
+              />
             </div>
           </main>
         </div>
