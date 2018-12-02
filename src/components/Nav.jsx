@@ -5,9 +5,7 @@ import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-export const Nav = props => {
-  const { revealPointsAction, clearPointsAction, leaveRoomAction } = props;
-
+export const Nav = ({ revealPointsAction, clearPointsAction, leaveRoomAction }) => {
   const closeNav = () => {
     UIkit.offcanvas('#offcanvas-nav').hide();
   };
