@@ -8,9 +8,9 @@ import {
   LEAVE_ROOM,
 } from '../sockets/SocketConnection';
 import { Nav } from './Nav';
-
-const POINTERS = 'pointers';
-const OBSERVERS = 'observers';
+import { Scale } from './Scale';
+import { POINTER, OBSERVER } from '../constants/roles';
+import { SIMPLE } from '../constants/scales';
 
 export class Room extends Component {
   constructor(props) {
@@ -18,11 +18,12 @@ export class Room extends Component {
     this.state = {
       pointers: [],
       observers: [],
-      room: '621QKO',
+      room: 'ABC123',
       showPoints: false,
       points: null,
       voted: false,
-      view: POINTERS,
+      view: POINTER, // TODO: default to player's own role
+      scale: SIMPLE, // TODO: make this configurable/default to room's scale
     };
   }
 
@@ -104,7 +105,7 @@ export class Room extends Component {
   };
 
   render() {
-    const { showPoints, pointers, observers, points, voted, view } = this.state;
+    const { showPoints, pointers, observers, points, voted, view, scale } = this.state;
     console.log('pointers', pointers);
     const pointersView = pointers.map(pointer => (
       <div className="pointer-row" key={pointer.id}>
@@ -120,66 +121,27 @@ export class Room extends Component {
 
     return (
       <div className="room-content">
-        <div className="room-content--top">
+        <div className="room-content__top">
           <ul className="uk-child-width-expand" uk-tab="true">
             <li
-              className={view === POINTERS ? 'uk-active' : undefined}
-              onClick={_ => this.toggleView(POINTERS)}
+              className={view === POINTER ? 'uk-active' : undefined}
+              onClick={_ => this.toggleView(POINTER)}
             >
-              <a href="">Pointers</a>
+              <a href="">Pointers ({pointers.length})</a>
             </li>
             <li
-              className={view === OBSERVERS ? 'uk-active' : undefined}
-              onClick={_ => this.toggleView(OBSERVERS)}
+              className={view === OBSERVER ? 'uk-active' : undefined}
+              onClick={_ => this.toggleView(OBSERVER)}
             >
-              <a href="">Observers</a>
+              <a href="">Observers ({observers.length})</a>
             </li>
           </ul>
-          {view === POINTERS ? pointersView : observersView}
+          {view === POINTER ? pointersView : observersView}
         </div>
 
-        <div className="room-content--slider">
-          {!voted ? (
-            <div
-              className="uk-position-relative uk-visible-toggle uk-light"
-              uk-slider="finite: true"
-            >
-              <div className="uk-slider-container">
-                <ul className="uk-slider-items uk-child-width-1-3">
-                  {['?', 1, 2, 3, 4, 5].map(value => (
-                    <li
-                      key={`point-${value}`}
-                      className={points === value ? 'point-selected' : undefined}
-                      onClick={_ => this.selectPoints(value)}
-                    >
-                      <div className="uk-position-center uk-panel">
-                        <h1>{value}</h1>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  className="uk-position-center-left uk-position-small"
-                  href="#"
-                  uk-slidenav-previous="true"
-                  uk-slider-item="previous"
-                >
-                  <span uk-icon="icon: chevron-left; ratio: 1.5" />
-                </a>
-                <a
-                  className="uk-position-center-right uk-position-small"
-                  href="#"
-                  uk-slidenav-next="true"
-                  uk-slider-item="next"
-                >
-                  <span uk-icon="icon: chevron-right; ratio: 1.5" />
-                </a>
-              </div>
-            </div>
-          ) : null}
-        </div>
+        <Scale voted={voted} points={points} scale={scale} />
 
-        <div className="room-content--bottom">
+        <div className="room-content__bottom">
           <button
             className="uk-button uk-button-default uk-button-large  uk-width-1-1"
             disabled={!points}
