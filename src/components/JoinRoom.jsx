@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { getRoomNameFromQueryParams } from '../utils/url';
 
 export default function JoinRoom({ socketConnection, history }) {
+  const prefilledRoomName = getRoomNameFromQueryParams();
   const name = useFormInput('');
-  const room = useFormInput('');
+  const room = useFormInput(prefilledRoomName);
   const isObserver = useFormInput('false');
 
   const joinRoom = () => {

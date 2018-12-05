@@ -21,10 +21,11 @@ class App extends Component {
   }
 
   componentWillMount() {
-    return fetch(`https://${API_URL}/wakeup`).then(() => console.log('server is awake'));
+    return fetch(`http://${API_URL}/wakeup`).then(() => console.log('server is awake'));
   }
 
   render() {
+    const { socketConnection } = this.state;
     return (
       <Router>
         <div className="app-container uk-offcanvas-content">
@@ -34,19 +35,15 @@ class App extends Component {
               <Route exact path="/" component={Home} />
               <Route
                 path="/join"
-                render={props => (
-                  <JoinRoom {...props} socketConnection={this.state.socketConnection} />
-                )}
+                render={props => <JoinRoom {...props} socketConnection={socketConnection} />}
               />
               <Route
                 path="/create"
-                render={props => (
-                  <CreateRoom {...props} socketConnection={this.state.socketConnection} />
-                )}
+                render={props => <CreateRoom {...props} socketConnection={socketConnection} />}
               />
               <Route
                 path="/room"
-                render={props => <Room {...props} socketConnection={this.state.socketConnection} />}
+                render={props => <Room {...props} socketConnection={socketConnection} />}
               />
             </div>
           </main>

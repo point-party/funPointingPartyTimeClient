@@ -105,7 +105,6 @@ export class Room extends Component {
 
   render() {
     const { showPoints, pointers, observers, points, voted, view } = this.state;
-    console.log('pointers', pointers);
     const pointersView = pointers.map(pointer => (
       <div className="pointer-row" key={pointer.id}>
         <span>{pointer.name}</span>

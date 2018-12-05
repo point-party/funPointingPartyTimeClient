@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { getRoomName } from '../utils/url';
 
 export class Header extends Component {
   render() {
     const { pathname } = window.location;
-    let roomName;
-    if (pathname.includes('room')) {
-      roomName = pathname.split('/')[2];
-    }
+    const roomName = getRoomName();
     return (
       <header>
         {pathname !== '/' ? (
