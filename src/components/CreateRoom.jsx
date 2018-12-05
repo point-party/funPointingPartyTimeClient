@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { getApiUrl } from '../utils/api';
+import { SIMPLE, FIBONACCI, TSHIRT } from '../constants/scales';
+
 const API_URL = getApiUrl();
 
 export class CreateRoom extends Component {
@@ -8,8 +10,8 @@ export class CreateRoom extends Component {
     this.state = {
       name: '',
       room: '',
-      displayRoomName: '',
-      observer: 'false',
+      observer: 'false', // TODO: can we change this key to "role" and pass a string from constants/roles?
+      scale: SIMPLE,
     };
   }
 
@@ -27,6 +29,12 @@ export class CreateRoom extends Component {
     });
   };
 
+  changeScale = event => {
+    this.setState({
+      scale: event.target.value,
+    });
+  };
+
   joinRoom = (roomName, playerName, observer) => {
     const { socketConnection } = this.props;
     socketConnection.joinRoom(roomName, playerName, observer);
@@ -37,7 +45,7 @@ export class CreateRoom extends Component {
     event.preventDefault();
     const { name, observer } = this.state;
     // edit backend to take in observer and name, and pointscale
-    return fetch(`https://${API_URL}/generateRoom?observer=${observer}&name=${name}`)
+    return fetch(`http://${API_URL}/generateRoom?observer=${observer}&name=${name}`)
       .then(res => res.json())
       .then(({ roomName }) => this.joinRoom(roomName, name, observer));
   };
@@ -98,11 +106,19 @@ export class CreateRoom extends Component {
               Point Scale
             </label>
             <div className="uk-form-controls">
-              <select className="uk-select" id="form-stacked-select" defaultValue={1}>
-                <option value={1}>Simple (0, 1, 2, 3)</option>
-                <option value={2}>Modified Fibonacci (0, ½, 1, 2 ... 100)</option>
-                <option value={3}>T-Shirt Sizes (XXS, XS ... XXL)</option>
-                <option disabled>Custom... (coming soon)</option>
+              <select
+                className="uk-select"
+                id="form-stacked-select"
+                onChange={this.changeScale}
+                defaultValue={SIMPLE}
+              >
+                <option value={SIMPLE}>Simple (1, 2, 3)</option>
+                <option disabled value={FIBONACCI}>
+                  Modified Fibonacci (1, 2, 3, 5 ... 100)
+                </option>
+                <option disabled value={TSHIRT}>
+                  T-Shirt Sizes (XXS, XS ... XXL)
+                </option>
               </select>
             </div>
           </div>

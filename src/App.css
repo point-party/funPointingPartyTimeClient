@@ -143,17 +143,17 @@ header span svg {
   flex-grow: 1;
 }
 
-.room-content--top {
+.room-content__top {
   flex: 1;
   overflow-y: auto;
   padding: 10px 20px;
 }
 
-.room-content--slider {
+.room-content__slider {
   padding: 0px;
 }
 
-.room-content--bottom {
+.room-content__bottom {
   padding: 20px;
 }
 
@@ -183,6 +183,14 @@ header span svg {
 
 .point-selected {
   background-color: rgba(0,0,0,0.5) !important;
+}
+
+/* TOAST NOTIFICATIONS */
+
+.uk-notification-message {
+  background: #edfbf6;
+  color: #32d296;
+  font-size: 15px;
 }
 
 /* INPUTS, BUTTONS, TOGGLES */
