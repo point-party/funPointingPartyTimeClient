@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getRoomNameFromQueryParams } from '../utils/url';
+import { Role } from './Role';
 
 export default function JoinRoom({ socketConnection, history }) {
   const prefilledRoomName = getRoomNameFromQueryParams();
@@ -48,30 +49,11 @@ export default function JoinRoom({ socketConnection, history }) {
           <label className="uk-form-label" htmlFor="form-stacked-text">
             Role
           </label>
-          <div className="uk-button-group uk-width-1-1">
-            <button
-              className={`uk-button-default uk-width-1-2 ${
-                isObserver.value === 'false' ? 'uk-button' : 'uk-button uk-button-disabled'
-              }`}
-              value={false}
-              onClick={isObserver.onChange}
-            >
-              Pointer
-            </button>
-            <button
-              className={`uk-button-default uk-width-1-2 ${
-                isObserver.value === 'true' ? 'uk-button' : 'uk-button uk-button-disabled'
-              }`}
-              value={true}
-              onClick={isObserver.onChange}
-            >
-              Observer
-            </button>
-          </div>
+          <Role changeRoleAction={isObserver.onChange} observer={isObserver.value} />
         </div>
         <div className="uk-margin">
           <button
-            className="uk-button uk-button-primary uk-button-large  uk-width-1-1"
+            className="uk-button uk-button-default uk-button-large  uk-width-1-1"
             disabled={!name.value || !room.value}
             onClick={joinRoom}
           >
