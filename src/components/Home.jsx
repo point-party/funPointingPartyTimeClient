@@ -5,7 +5,7 @@ export class Home extends Component {
   render() {
     return (
       <div className="home-content">
-        <p className="uk-margin">
+        <p className="uk-margin uk-width-1-1">
           <Link to="/create">
             <button className="uk-button uk-button-default uk-button-large uk-width-1-1">
               Create New Room

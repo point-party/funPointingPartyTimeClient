@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getApiUrl } from '../utils/api';
 import { SIMPLE, FIBONACCI, TSHIRT } from '../constants/scales';
+import { Role } from './Role';
 
 const API_URL = getApiUrl();
 
@@ -52,7 +53,6 @@ export class CreateRoom extends Component {
 
   render() {
     const { name, observer } = this.state;
-    let buttonClasses = 'uk-button-default uk-width-1-2 uk-button uk-button-toggle';
     return (
       <div className="create-room-content">
         <h3>Create a Room</h3>
@@ -76,30 +76,7 @@ export class CreateRoom extends Component {
             <label className="uk-form-label" htmlFor="form-stacked-text">
               Role
             </label>
-            <div className="uk-button-group uk-width-1-1">
-              <button
-                className={
-                  observer === 'false'
-                    ? `${buttonClasses} uk-button-toggle--selected`
-                    : buttonClasses
-                }
-                value="false"
-                onClick={this.changeRole}
-              >
-                Pointer
-              </button>
-              <button
-                className={
-                  observer === 'true'
-                    ? `${buttonClasses} uk-button-toggle--selected`
-                    : buttonClasses
-                }
-                value="true"
-                onClick={this.changeRole}
-              >
-                Observer
-              </button>
-            </div>
+            <Role changeRoleAction={this.changeRole} observer={observer} />
           </div>
           <div className="uk-margin">
             <label className="uk-form-label" htmlFor="form-stacked-select">

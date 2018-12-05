@@ -7,6 +7,7 @@ import JoinRoom from './components/JoinRoom';
 import { Room } from './components/Room';
 import { Header } from './components/Header';
 import SocketConnection from './sockets/SocketConnection';
+import { CREATE, JOIN, ROOM } from './constants/routes'
 import './App.css';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
@@ -34,15 +35,15 @@ class App extends Component {
             <div className="app-content">
               <Route exact path="/" component={Home} />
               <Route
-                path="/join"
+                path={JOIN}
                 render={props => <JoinRoom {...props} socketConnection={socketConnection} />}
               />
               <Route
-                path="/create"
+                path={CREATE}
                 render={props => <CreateRoom {...props} socketConnection={socketConnection} />}
               />
               <Route
-                path="/room"
+                path={ROOM}
                 render={props => <Room {...props} socketConnection={socketConnection} />}
               />
             </div>

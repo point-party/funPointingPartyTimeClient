@@ -9,6 +9,7 @@ import {
 } from '../sockets/SocketConnection';
 import { Nav } from './Nav';
 import { Scale } from './Scale';
+import { Role } from './Role';
 import { POINTER, OBSERVER } from '../constants/roles';
 import { SIMPLE } from '../constants/scales';
 
@@ -18,11 +19,10 @@ export class Room extends Component {
     this.state = {
       pointers: [],
       observers: [],
-      room: 'ABC123',
       showPoints: false,
       points: null,
       voted: false,
-      view: POINTER, // TODO: default to player's own role
+      view: POINTER,
       scale: SIMPLE, // TODO: make this configurable/default to room's scale
     };
   }
@@ -45,8 +45,12 @@ export class Room extends Component {
     socketConnection.close();
   }
 
-  toggleView = value => {
-    this.setState({ view: value });
+  changeRole = event => {
+    event.stopPropagation();
+    event.preventDefault();
+    this.setState({
+      view: event.target.value === 'true' ? OBSERVER : POINTER,
+    });
   };
 
   selectPoints = points => {
@@ -122,31 +126,22 @@ export class Room extends Component {
     return (
       <div className="room-content">
         <div className="room-content__top">
-          <ul className="uk-child-width-expand" uk-tab="true">
-            <li
-              className={view === POINTER ? 'uk-active' : undefined}
-              onClick={_ => this.toggleView(POINTER)}
-            >
-              <a href="">Pointers ({pointers.length})</a>
-            </li>
-            <li
-              className={view === OBSERVER ? 'uk-active' : undefined}
-              onClick={_ => this.toggleView(OBSERVER)}
-            >
-              <a href="">Observers ({observers.length})</a>
-            </li>
-          </ul>
+          <Role
+            changeRoleAction={this.changeRole}
+            observer={view === OBSERVER}
+            pointers={pointers}
+            observers={observers}
+          />
           {view === POINTER ? pointersView : observersView}
         </div>
-
         <Scale voted={voted} points={points} scale={scale} selectPointsAction={this.selectPoints} />
         <div className="room-content__bottom">
           <button
             className="uk-button uk-button-default uk-button-large  uk-width-1-1"
-            disabled={!points}
+            disabled={points === null}
             onClick={this.vote}
           >
-            {!voted ? 'Submit' : 'Change Vote'}
+            {!voted ? 'Vote' : 'Change Vote'}
           </button>
         </div>
         <Nav
