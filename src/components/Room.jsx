@@ -139,8 +139,7 @@ export class Room extends Component {
           {view === POINTER ? pointersView : observersView}
         </div>
 
-        <Scale voted={voted} points={points} scale={scale} />
-
+        <Scale voted={voted} points={points} scale={scale} selectPointsAction={this.selectPoints} />
         <div className="room-content__bottom">
           <button
             className="uk-button uk-button-default uk-button-large  uk-width-1-1"

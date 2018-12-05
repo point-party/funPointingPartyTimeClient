@@ -1,21 +1,18 @@
 import React from 'react';
 import { VALUES } from '../constants/scales';
 
-export const Scale = ({ voted, points, scale }) => {
+export const Scale = ({ voted, points, scale, selectPointsAction }) => {
   return (
     <div className="room-content__slider">
       {!voted ? (
-        <div
-          className="uk-position-relative uk-visible-toggle uk-light"
-          uk-slider="finite: true"
-        >
+        <div className="uk-position-relative uk-visible-toggle uk-light" uk-slider="finite: true">
           <div className="uk-slider-container">
             <ul className="uk-slider-items uk-child-width-1-3">
               {['?', ...VALUES[scale]].map(value => (
                 <li
                   key={`point-${value}`}
                   className={points === value ? 'point-selected' : undefined}
-                  onClick={_ => this.selectPoints(value)}
+                  onClick={_ => selectPointsAction(value)}
                 >
                   <div className="uk-position-center uk-panel">
                     <h1>{value}</h1>
