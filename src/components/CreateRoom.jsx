@@ -39,7 +39,7 @@ export class CreateRoom extends Component {
   joinRoom = (roomName, playerName, observer) => {
     const { socketConnection } = this.props;
     socketConnection.joinRoom(roomName, playerName, observer);
-    this.props.history.push(`/room/${roomName}`);
+    this.props.history.push(`/room/${roomName}?observer=${observer}`);
   };
 
   createRoom = event => {

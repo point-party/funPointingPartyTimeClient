@@ -12,3 +12,9 @@ export const getRoomNameFromQueryParams = () => {
   const roomName = urlParams.get('roomName');
   return roomName || '';
 };
+
+export const getObserverFromQueryParams = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const observer = urlParams.get('observer');
+  return observer === 'true';
+};

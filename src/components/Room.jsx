@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import UIkit from 'uikit';
 import {
   JOIN_ROOM,
@@ -12,6 +12,7 @@ import { Scale } from './Scale';
 import { Role } from './Role';
 import { POINTER, OBSERVER } from '../constants/roles';
 import { SIMPLE } from '../constants/scales';
+import { getObserverFromQueryParams } from '../utils/url';
 
 export class Room extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ export class Room extends Component {
       voted: false,
       view: POINTER,
       scale: SIMPLE, // TODO: make this configurable/default to room's scale
+      isObserver: getObserverFromQueryParams(), // take this out, put redux in finally.
     };
   }
 
@@ -58,9 +60,8 @@ export class Room extends Component {
   };
 
   decideAction = data => {
-    console.log('data', data);
     if (data.event === JOIN_ROOM || data.event === LEAVE_ROOM) {
-      this.setState({ pointers: data.payload.players });
+      this.setState({ pointers: data.payload.players, observers: data.payload.observers });
     }
     if (data.event === VOTED) {
       this.setState(prevState => ({
@@ -89,6 +90,12 @@ export class Room extends Component {
     this.setState(prevState => ({ voted: !prevState.voted }));
   };
 
+  // COMBINE THESE TWO. SHOULD NOTE (VOTE) when you change vote
+
+  changeVote = () => {
+    this.setState(prevState => ({ voted: !prevState.voted }));
+  };
+
   revealPoints = () => {
     const { socketConnection } = this.props;
     socketConnection.send(REVEAL_POINTS);
@@ -109,8 +116,7 @@ export class Room extends Component {
   };
 
   render() {
-    const { showPoints, pointers, observers, points, voted, view, scale } = this.state;
-    console.log('pointers', pointers);
+    const { isObserver, showPoints, pointers, observers, points, voted, view, scale } = this.state;
     const pointersView = pointers.map(pointer => (
       <div className="pointer-row" key={pointer.id}>
         <span>{pointer.name}</span>
@@ -118,8 +124,8 @@ export class Room extends Component {
       </div>
     ));
     const observersView = observers.map(obs => (
-      <div className="pointer-row" key={obs}>
-        <span>{obs}</span>
+      <div className="pointer-row" key={obs.id}>
+        <span>{obs.name}</span>
       </div>
     ));
 
@@ -134,16 +140,35 @@ export class Room extends Component {
           />
           {view === POINTER ? pointersView : observersView}
         </div>
-        <Scale voted={voted} points={points} scale={scale} selectPointsAction={this.selectPoints} />
-        <div className="room-content__bottom">
-          <button
-            className="uk-button uk-button-default uk-button-large  uk-width-1-1"
-            disabled={points === null}
-            onClick={this.vote}
-          >
-            {!voted ? 'Vote' : 'Change Vote'}
-          </button>
-        </div>
+        {!isObserver ? (
+          <Fragment>
+            <Scale
+              voted={voted}
+              points={points}
+              scale={scale}
+              selectPointsAction={this.selectPoints}
+            />
+            <div className="room-content__bottom">
+              {!voted ? (
+                <button
+                  className="uk-button uk-button-default uk-button-large  uk-width-1-1"
+                  disabled={points === null}
+                  onClick={this.vote}
+                >
+                  Vote
+                </button>
+              ) : (
+                <button
+                  className="uk-button uk-button-default uk-button-large  uk-width-1-1"
+                  disabled={points === null}
+                  onClick={this.changeVote}
+                >
+                  Change Vote
+                </button>
+              )}
+            </div>
+          </Fragment>
+        ) : null}
         <Nav
           revealPointsAction={this.revealPoints}
           clearPointsAction={this.clearPoints}

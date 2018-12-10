@@ -10,7 +10,7 @@ export default function JoinRoom({ socketConnection, history }) {
 
   const joinRoom = () => {
     socketConnection.joinRoom(room.value, name.value, isObserver.value);
-    history.push(`/room/${room.value}`);
+    history.push(`/room/${room.value}?observer=${isObserver.value}`);
   };
 
   return (
