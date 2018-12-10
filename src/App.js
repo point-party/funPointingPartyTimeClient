@@ -7,7 +7,7 @@ import JoinRoom from './components/JoinRoom';
 import { Room } from './components/Room';
 import { Header } from './components/Header';
 import SocketConnection from './sockets/SocketConnection';
-import { CREATE, JOIN, ROOM } from './constants/routes'
+import { CREATE, JOIN, ROOM } from './constants/routes';
 import './App.css';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    return fetch(`http://${API_URL}/wakeup`).then(() => console.log('server is awake'));
+    return fetch(`https://${API_URL}/wakeup`).then(() => console.log('server is awake'));
   }
 
   render() {

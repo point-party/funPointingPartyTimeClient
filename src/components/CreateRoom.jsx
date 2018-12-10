@@ -46,7 +46,7 @@ export class CreateRoom extends Component {
     event.preventDefault();
     const { name, observer } = this.state;
     // edit backend to take in observer and name, and pointscale
-    return fetch(`http://${API_URL}/generateRoom?observer=${observer}&name=${name}`)
+    return fetch(`https://${API_URL}/generateRoom?observer=${observer}&name=${name}`)
       .then(res => res.json())
       .then(({ roomName }) => this.joinRoom(roomName, name, observer));
   };

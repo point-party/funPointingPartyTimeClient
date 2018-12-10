@@ -19,7 +19,7 @@ export default class SocketConnection {
   joinRoom = (roomName, playerName, observer) => {
     if (roomName && playerName) {
       this.conn = new WebSocket(
-        `ws://${API_URL}/joinRoom?room=${roomName}&name=${playerName}&observer=${observer}&id=${
+        `wss://${API_URL}/joinRoom?room=${roomName}&name=${playerName}&observer=${observer}&id=${
           this.id
         }`
       );
