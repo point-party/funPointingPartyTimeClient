@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { getApiUrl } from '../utils/api';
 import { SIMPLE, FIBONACCI, TSHIRT } from '../constants/scales';
 import { Role } from './Role';
+import { changeRole } from '../appState/reducers/role';
 
 const API_URL = getApiUrl();
 
@@ -11,8 +13,7 @@ export class CreateRoom extends Component {
     this.state = {
       name: '',
       room: '',
-      observer: 'false', // TODO: can we change this key to "role" and pass a string from constants/roles?
-      scale: SIMPLE,
+      pointScale: SIMPLE,
     };
   }
 
@@ -22,37 +23,41 @@ export class CreateRoom extends Component {
     });
   };
 
-  changeRole = event => {
+  changeRoleAction = event => {
+    const { changeRole } = this.props;
     event.stopPropagation();
     event.preventDefault();
-    this.setState({
-      observer: event.target.value,
-    });
+    changeRole(event.target.value);
   };
 
   changeScale = event => {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('event', event.target.value);
     this.setState({
-      scale: event.target.value,
+      pointScale: event.target.value,
     });
   };
 
-  joinRoom = (roomName, playerName, observer) => {
-    const { socketConnection } = this.props;
-    socketConnection.joinRoom(roomName, playerName, observer);
-    this.props.history.push(`/room/${roomName}?observer=${observer}`);
+  joinRoom = (roomName, playerName) => {
+    const { socketConnection, role } = this.props;
+    socketConnection.joinRoom(roomName, playerName, role);
+    this.props.history.push(`/room/${roomName}`);
   };
 
   createRoom = event => {
     event.preventDefault();
-    const { name, observer } = this.state;
+    const { name, pointScale } = this.state;
+    const { role } = this.props;
     // edit backend to take in observer and name, and pointscale
-    return fetch(`http://${API_URL}/generateRoom?observer=${observer}&name=${name}`)
+    return fetch(`https://${API_URL}/generateRoom?pointScale=${pointScale}`)
       .then(res => res.json())
-      .then(({ roomName }) => this.joinRoom(roomName, name, observer));
+      .then(({ roomName }) => this.joinRoom(roomName, name, role));
   };
 
   render() {
-    const { name, observer } = this.state;
+    const { name } = this.state;
+    const { role } = this.props;
     return (
       <div className="create-room-content">
         <h3>Create a Room</h3>
@@ -76,7 +81,7 @@ export class CreateRoom extends Component {
             <label className="uk-form-label" htmlFor="form-stacked-text">
               Role
             </label>
-            <Role changeRoleAction={this.changeRole} observer={observer} />
+            <Role changeRoleAction={this.changeRoleAction} role={role} />
           </div>
           <div className="uk-margin">
             <label className="uk-form-label" htmlFor="form-stacked-select">
@@ -87,15 +92,11 @@ export class CreateRoom extends Component {
                 className="uk-select"
                 id="form-stacked-select"
                 onChange={this.changeScale}
-                defaultValue={SIMPLE}
+                defaultValue={this.state.pointScale}
               >
                 <option value={SIMPLE}>Simple (1, 2, 3)</option>
-                <option disabled value={FIBONACCI}>
-                  Modified Fibonacci (1, 2, 3, 5 ... 100)
-                </option>
-                <option disabled value={TSHIRT}>
-                  T-Shirt Sizes (XXS, XS ... XXL)
-                </option>
+                <option value={FIBONACCI}>Modified Fibonacci (1, 2, 3, 5 ... 100)</option>
+                <option value={TSHIRT}>T-Shirt Sizes (XXS, XS ... XXL)</option>
               </select>
             </div>
           </div>
@@ -113,3 +114,7 @@ export class CreateRoom extends Component {
     );
   }
 }
+export default connect(
+  state => state,
+  { changeRole }
+)(CreateRoom);

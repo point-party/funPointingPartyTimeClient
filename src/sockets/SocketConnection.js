@@ -16,12 +16,10 @@ export default class SocketConnection {
     this.id = createId();
   }
 
-  joinRoom = (roomName, playerName, observer) => {
+  joinRoom = (roomName, playerName, role) => {
     if (roomName && playerName) {
       this.conn = new WebSocket(
-        `ws://${API_URL}/joinRoom?room=${roomName}&name=${playerName}&observer=${observer}&id=${
-          this.id
-        }`
+        `wss://${API_URL}/joinRoom?room=${roomName}&name=${playerName}&role=${role}&id=${this.id}`
       );
       this.name = playerName;
     }

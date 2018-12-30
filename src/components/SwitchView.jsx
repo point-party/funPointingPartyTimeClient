@@ -1,7 +1,7 @@
 import React from 'react';
 import { POINTER, OBSERVER } from '../constants/roles';
 
-export const Role = ({ changeRoleAction, role, pointers, observers }) => {
+export const SwitchView = ({ changeView, pointers, observers, view }) => {
   const pointersLabel = pointers ? `Pointers (${pointers.length})` : 'Pointer';
   const observersLabel = observers ? `Observers (${observers.length})` : 'Observer';
   let buttonClasses = 'uk-width-1-2 uk-button uk-button-toggle';
@@ -9,18 +9,18 @@ export const Role = ({ changeRoleAction, role, pointers, observers }) => {
   return (
     <div className="uk-button-group uk-width-1-1">
       <button
-        className={role === POINTER ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses}
+        className={view === POINTER ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses}
         value={POINTER}
-        onClick={changeRoleAction}
+        onClick={changeView}
       >
         {pointersLabel}
       </button>
       <button
         className={
-          role === OBSERVER ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses
+          view === OBSERVER ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses
         }
         value={OBSERVER}
-        onClick={changeRoleAction}
+        onClick={changeView}
       >
         {observersLabel}
       </button>

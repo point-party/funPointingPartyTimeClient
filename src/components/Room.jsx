@@ -9,10 +9,9 @@ import {
 } from '../sockets/SocketConnection';
 import { Nav } from './Nav';
 import { Scale } from './Scale';
-import { Role } from './Role';
-import { POINTER, OBSERVER } from '../constants/roles';
-import { SIMPLE } from '../constants/scales';
-import { getObserverFromQueryParams } from '../utils/url';
+import { POINTER } from '../constants/roles';
+import { connect } from 'react-redux';
+import { SwitchView } from './SwitchView';
 
 export class Room extends Component {
   constructor(props) {
@@ -24,8 +23,7 @@ export class Room extends Component {
       points: null,
       voted: false,
       view: POINTER,
-      scale: SIMPLE, // TODO: make this configurable/default to room's scale
-      isObserver: getObserverFromQueryParams(), // take this out, put redux in finally.
+      pointScale: '',
     };
   }
 
@@ -47,21 +45,17 @@ export class Room extends Component {
     socketConnection.close();
   }
 
-  changeRole = event => {
-    event.stopPropagation();
-    event.preventDefault();
-    this.setState({
-      view: event.target.value === 'true' ? OBSERVER : POINTER,
-    });
-  };
-
   selectPoints = points => {
     this.setState({ points });
   };
 
   decideAction = data => {
     if (data.event === JOIN_ROOM || data.event === LEAVE_ROOM) {
-      this.setState({ pointers: data.payload.players, observers: data.payload.observers });
+      this.setState({
+        pointers: data.payload.players,
+        observers: data.payload.observers,
+        pointScale: data.payload.pointScale,
+      });
     }
     if (data.event === VOTED) {
       this.setState(prevState => ({
@@ -90,10 +84,12 @@ export class Room extends Component {
     this.setState(prevState => ({ voted: !prevState.voted }));
   };
 
-  // COMBINE THESE TWO. SHOULD NOTE (VOTE) when you change vote
-
   changeVote = () => {
     this.setState(prevState => ({ voted: !prevState.voted }));
+  };
+
+  changeView = event => {
+    this.setState({ view: event.target.value });
   };
 
   revealPoints = () => {
@@ -105,7 +101,6 @@ export class Room extends Component {
   clearPoints = () => {
     const { socketConnection } = this.props;
     socketConnection.send(CLEAR_POINTS);
-    // not sure what the payload should be here, if any
     this.setState({ showPoints: false });
   };
 
@@ -116,7 +111,8 @@ export class Room extends Component {
   };
 
   render() {
-    const { isObserver, showPoints, pointers, observers, points, voted, view, scale } = this.state;
+    const { showPoints, pointers, observers, points, voted, view, pointScale } = this.state;
+    const { role } = this.props;
     const pointersView = pointers.map(pointer => (
       <div className="pointer-row" key={pointer.id}>
         <span>{pointer.name}</span>
@@ -132,22 +128,24 @@ export class Room extends Component {
     return (
       <div className="room-content">
         <div className="room-content__top">
-          <Role
-            changeRoleAction={this.changeRole}
-            observer={view === OBSERVER}
+          <SwitchView
+            changeView={this.changeView}
             pointers={pointers}
             observers={observers}
+            view={view}
           />
           {view === POINTER ? pointersView : observersView}
         </div>
-        {!isObserver ? (
+        {role === POINTER ? (
           <Fragment>
-            <Scale
-              voted={voted}
-              points={points}
-              scale={scale}
-              selectPointsAction={this.selectPoints}
-            />
+            {pointScale && (
+              <Scale
+                voted={voted}
+                points={points}
+                scale={pointScale}
+                selectPointsAction={this.selectPoints}
+              />
+            )}
             <div className="room-content__bottom">
               {!voted ? (
                 <button
@@ -178,6 +176,11 @@ export class Room extends Component {
     );
   }
 }
+
+export default connect(
+  state => state,
+  {}
+)(Room);
 
 const updatePlayersPoints = (players, update) => {
   return players.map(player => {

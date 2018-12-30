@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { Home } from './components/Home';
-import { CreateRoom } from './components/CreateRoom';
+import CreateRoom from './components/CreateRoom';
 import JoinRoom from './components/JoinRoom';
-import { Room } from './components/Room';
+import Room from './components/Room';
 import { Header } from './components/Header';
 import SocketConnection from './sockets/SocketConnection';
-import { CREATE, JOIN, ROOM } from './constants/routes'
+import { CREATE, JOIN, ROOM } from './constants/routes';
 import './App.css';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
@@ -15,14 +15,14 @@ import { getApiUrl } from './utils/api';
 const API_URL = getApiUrl();
 UIkit.use(Icons);
 
-class App extends Component {
+export default class App extends Component {
   constructor() {
     super();
     this.state = { socketConnection: new SocketConnection() };
   }
 
   componentWillMount() {
-    return fetch(`http://${API_URL}/wakeup`).then(() => console.log('server is awake'));
+    return fetch(`https://${API_URL}/wakeup`).then(() => console.log('server is awake'));
   }
 
   render() {
@@ -53,5 +53,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
