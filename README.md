@@ -6,8 +6,8 @@ Deployed here: https://point-it-2d1ae.firebaseapp.com
 
 Screenshots of Point It! in action:
 
-![title](https://user-images.githubusercontent.com/17937283/50569150-bac10200-0d1b-11e9-801e-971ee0912add.png)
+![title](https://user-images.githubusercontent.com/17937283/50569210-83068a00-0d1c-11e9-8615-71aa5532d868.png)
 
-![createroom](https://user-images.githubusercontent.com/17937283/50569152-c4e30080-0d1b-11e9-95cf-779a5de1cc56.png)
+![createroom](https://user-images.githubusercontent.com/17937283/50569216-9285d300-0d1c-11e9-862c-c91ec077b61b.png)
 
-![insession](https://user-images.githubusercontent.com/17937283/50569156-cf04ff00-0d1b-11e9-8f20-aae152afd410.png)
+![insession](https://user-images.githubusercontent.com/17937283/50569219-9a457780-0d1c-11e9-8eab-293488ef8a32.png)
