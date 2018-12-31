@@ -105,6 +105,10 @@ export class Room extends Component {
     this.setState({ showPoints: false });
   };
 
+  copiedLink = () => {
+    triggerToast('Copied Link!', 'success');
+  };
+
   leaveRoom = () => {
     const { socketConnection } = this.props;
     socketConnection.close();
@@ -172,6 +176,7 @@ export class Room extends Component {
           revealPointsAction={this.revealPoints}
           clearPointsAction={this.clearPoints}
           leaveRoomAction={this.leaveRoom}
+          copiedLinkAction={this.copiedLink}
         />
       </div>
     );

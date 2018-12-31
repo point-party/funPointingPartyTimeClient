@@ -15,10 +15,10 @@ export class JoinRoom extends Component {
   }
 
   joinRoom = () => {
-    const { room, name, observer } = this.state;
+    const { room, name } = this.state;
     const { socketConnection, history, role } = this.props;
     socketConnection.joinRoom(room, name, role);
-    history.push(`/room/${room}?observer=${observer}`);
+    history.push(`/room/${room}`);
   };
 
   changeName = event => {

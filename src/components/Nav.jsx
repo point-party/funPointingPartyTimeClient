@@ -7,7 +7,12 @@ import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getRoomName } from '../utils/url';
 
-export const Nav = ({ revealPointsAction, clearPointsAction, leaveRoomAction }) => {
+export const Nav = ({
+  revealPointsAction,
+  clearPointsAction,
+  leaveRoomAction,
+  copiedLinkAction,
+}) => {
   const closeNav = () => {
     UIkit.offcanvas('#offcanvas-nav').hide();
   };
@@ -36,6 +41,7 @@ export const Nav = ({ revealPointsAction, clearPointsAction, leaveRoomAction }) 
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
+    copiedLinkAction();
     closeNav();
   };
 
