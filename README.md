@@ -1,9 +1,5 @@
-Fun-Pointing-Party-Time-Client:
+Point It!:
 
-The Client will allow the user to either create or join a pointing session. 
+This is a interactive story pointing app. Choose a pointing scale, and create a room. Invite your colleagues to join the room, and have fun pointing!
 
-They will be able to join as an observer or player. The user will be able to cast a vote or reset it.
-
-The votes will not be revealed until every player in the session has cast a vote. (A manual reveal button will be available).
-
-The Client makes a socket connection to the server in order to orchestrate the connectivity between players.
+Deployed here: https://point-it-2d1ae.firebaseapp.com
