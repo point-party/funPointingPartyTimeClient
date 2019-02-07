@@ -17,7 +17,7 @@ export class JoinRoom extends Component {
   joinRoom = () => {
     const { room, name } = this.state;
     const { socketConnection, history, role } = this.props;
-    socketConnection.joinRoom(room, name, role);
+    socketConnection.joinRoom(room.toUpperCase(), name, role);
     history.push(`/room/${room}`);
   };
 
@@ -54,7 +54,7 @@ export class JoinRoom extends Component {
             <div className="uk-form-controls">
               <input
                 value={room}
-                className="uk-input"
+                className="uk-input room-name-input"
                 id="form-stacked-text"
                 type="text"
                 placeholder=""
