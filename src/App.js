@@ -22,7 +22,7 @@ export default class App extends Component {
   }
 
   componentWillMount() {
-    return fetch(`https://${API_URL}/wakeup`).then(() => console.log('server is awake'));
+    return fetch(`https://${API_URL}/wakeup`);
   }
 
   render() {
