@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getApiUrl } from '../utils/api';
-import { SIMPLE, FIBONACCI, TSHIRT } from '../constants/scales';
-import { Role } from './Role';
+import { SIMPLE, FIBONACCI, T_SHIRT } from '../constants/scales';
+import { ROOM } from '../constants/routes';
 import { changeRole } from '../appState/reducers/role';
+import Role from './Role';
 
 const API_URL = getApiUrl();
 
@@ -42,7 +43,7 @@ export class CreateRoom extends Component {
   joinRoom = (roomName, playerName) => {
     const { socketConnection, role } = this.props;
     socketConnection.joinRoom(roomName, playerName, role);
-    this.props.history.push(`/room/${roomName}`);
+    this.props.history.push(`${ROOM}/${roomName}`);
   };
 
   createRoom = event => {
@@ -96,7 +97,7 @@ export class CreateRoom extends Component {
               >
                 <option value={SIMPLE}>Simple (1, 2, 3)</option>
                 <option value={FIBONACCI}>Modified Fibonacci (1, 2, 3, 5 ... 100)</option>
-                <option value={TSHIRT}>T-Shirt Sizes (XXS, XS ... XXL)</option>
+                <option value={T_SHIRT}>T-Shirt Sizes (XXS, XS ... XXL)</option>
               </select>
             </div>
           </div>
@@ -114,6 +115,7 @@ export class CreateRoom extends Component {
     );
   }
 }
+
 export default connect(
   state => state,
   { changeRole }

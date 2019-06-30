@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import { ROOM } from '../constants/routes';
 import { getRoomNameFromQueryParams } from '../utils/url';
-import { Role } from './Role';
 import { changeRole } from '../appState/reducers/role';
+
+import Role from './Role';
 
 export class JoinRoom extends Component {
   constructor(props) {
@@ -18,7 +21,7 @@ export class JoinRoom extends Component {
     const { room, name } = this.state;
     const { socketConnection, history, role } = this.props;
     socketConnection.joinRoom(room.toUpperCase(), name, role);
-    history.push(`/room/${room}`);
+    history.push(`${ROOM}/${room}`);
   };
 
   changeName = event => {

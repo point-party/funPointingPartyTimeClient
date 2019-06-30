@@ -1,7 +1,7 @@
 import React from 'react';
 import { POINTER, OBSERVER } from '../constants/roles';
 
-export const Role = ({ changeRoleAction, role, pointers, observers }) => {
+const Role = ({ changeRoleAction, role, pointers, observers }) => {
   const pointersLabel = pointers ? `Pointers (${pointers.length})` : 'Pointer';
   const observersLabel = observers ? `Observers (${observers.length})` : 'Observer';
   let buttonClasses = 'uk-width-1-2 uk-button uk-button-toggle';
@@ -27,3 +27,5 @@ export const Role = ({ changeRoleAction, role, pointers, observers }) => {
     </div>
   );
 };
+
+export default Role;

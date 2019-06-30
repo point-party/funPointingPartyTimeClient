@@ -1,34 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { getRoomName } from '../utils/url';
-import { ROOM } from '../constants/routes';
+import { HOME, ROOM, CREATE, JOIN } from '../constants/routes';
 
-export class Header extends Component {
-  render() {
-    const { pathname } = window.location;
-    const isInRoom = pathname.includes(ROOM);
-    let roomName = isInRoom ? `Room: ${getRoomName()}` : 'Point It!';
+const Header = () => {
+  const { pathname } = window.location;
+  const isInRoom = pathname.includes(ROOM);
+  const isInCreate = pathname.includes(CREATE);
+  const isInJoin = pathname.includes(JOIN);
+  const roomName = isInRoom ? `Room: ${getRoomName()}` : 'Point It!';
 
-    const backArrow =
-      pathname !== '/' ? (
-        <Link to="/">
-          <span uk-icon="icon: arrow-left; ratio: 1.5" />
-        </Link>
-      ) : (
-        <span />
-      );
-    const hamburgerMenu = isInRoom ? (
-      <span uk-toggle="target: #offcanvas-nav" uk-icon="icon: menu; ratio: 1.5" />
-    ) : (
-      <span />
-    );
+  const backArrow = (
+    <Link to={HOME}>
+      <span uk-icon="icon: arrow-left; ratio: 1.5" />
+    </Link>
+  );
+  const hamburgerMenu = (
+    <span uk-toggle="target: #offcanvas-nav" uk-icon="icon: menu; ratio: 1.5" />
+  );
 
-    return (
-      <header>
-        {backArrow}
-        <h2>{roomName}</h2>
-        {hamburgerMenu}
-      </header>
-    );
-  }
-}
+  return (
+    <header>
+      {isInCreate || isInJoin ? backArrow : <span />}
+      <h2>{roomName}</h2>
+      {isInRoom ? hamburgerMenu : <span />}
+    </header>
+  );
+};
+
+export default Header;
