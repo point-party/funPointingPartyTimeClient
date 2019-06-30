@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { VALUES } from '../constants/scales';
 
-export const Scale = ({ voted, points, scale, selectPointsAction }) => {
+const Scale = memo(({ voted, points, scale, selectPointsAction }) => {
   return (
     <div className="room-content__slider">
       {!voted ? (
@@ -41,4 +41,6 @@ export const Scale = ({ voted, points, scale, selectPointsAction }) => {
       ) : null}
     </div>
   );
-};
+});
+
+export default Scale;

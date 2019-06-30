@@ -1,29 +1,27 @@
 import React from 'react';
 import { POINTER, OBSERVER } from '../constants/roles';
+import ToggleButton from './Form/ToggleButton';
 
-const Role = ({ changeRoleAction, role, pointers, observers }) => {
-  const pointersLabel = pointers ? `Pointers (${pointers.length})` : 'Pointer';
-  const observersLabel = observers ? `Observers (${observers.length})` : 'Observer';
-  let buttonClasses = 'uk-width-1-2 uk-button uk-button-toggle';
+const Role = ({ id, changeRoleAction, role, pointers, observers }) => {
+  const pointerLabel = pointers ? `Pointers (${pointers.length})` : 'Pointer';
+  const observerLabel = observers ? `Observers (${observers.length})` : 'Observer';
 
   return (
-    <div className="uk-button-group uk-width-1-1">
-      <button
-        className={role === POINTER ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses}
+    <div id={id} className="uk-button-group uk-width-1-1">
+      <ToggleButton
+        id="pointer-role-toggle"
+        text={pointerLabel}
         value={POINTER}
+        selected={role === POINTER}
         onClick={changeRoleAction}
-      >
-        {pointersLabel}
-      </button>
-      <button
-        className={
-          role === OBSERVER ? `${buttonClasses} uk-button-toggle--selected` : buttonClasses
-        }
+      />
+      <ToggleButton
+        id="observer-role-toggle"
+        text={observerLabel}
         value={OBSERVER}
+        selected={role === OBSERVER}
         onClick={changeRoleAction}
-      >
-        {observersLabel}
-      </button>
+      />
     </div>
   );
 };

@@ -136,6 +136,7 @@ header span svg {
 
 /* CREATE ROOM PAGE */
 
+.join-room-content,
 .create-room-content {
   padding: 20px;
 }
@@ -279,7 +280,7 @@ header span svg {
 
 /* INPUTS, BUTTONS, TOGGLES */
 
-.room-name-input {
+.uppercase-input {
   text-transform: uppercase;
 }
 

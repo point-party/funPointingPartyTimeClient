@@ -1,120 +1,78 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { getApiUrl } from '../utils/api';
 import { SIMPLE, FIBONACCI, T_SHIRT } from '../constants/scales';
 import { ROOM } from '../constants/routes';
 import { changeRole } from '../appState/reducers/role';
 import Role from './Role';
+import Form from './Form/Form';
+import FormField from './Form/FormField';
+import TextField from './Form/TextField';
+import SubmitButton from './Form/SubmitButton';
 
 const API_URL = getApiUrl();
 
-export class CreateRoom extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      room: '',
-      pointScale: SIMPLE,
-    };
-  }
+const CreateRoom = ({ changeRole, socketConnection, role, history }) => {
+  const [name, setName] = useState('');
+  const [scale, setScale] = useState(SIMPLE);
+  const changeName = event => setName(event.target.value);
 
-  changeName = event => {
-    this.setState({
-      name: event.target.value,
-    });
-  };
-
-  changeRoleAction = event => {
-    const { changeRole } = this.props;
-    event.stopPropagation();
-    event.preventDefault();
-    changeRole(event.target.value);
-  };
-
-  changeScale = event => {
+  const changeScale = event => {
     event.preventDefault();
     event.stopPropagation();
     console.log('event', event.target.value);
-    this.setState({
-      pointScale: event.target.value,
-    });
+    setScale(event.target.value);
   };
 
-  joinRoom = (roomName, playerName) => {
-    const { socketConnection, role } = this.props;
-    socketConnection.joinRoom(roomName, playerName, role);
-    this.props.history.push(`${ROOM}/${roomName}`);
-  };
+  const changeRoleAction = useCallback(
+    event => {
+      event.stopPropagation();
+      event.preventDefault();
+      changeRole(event.target.value);
+    },
+    [changeRole]
+  );
 
-  createRoom = event => {
+  const joinRoom = useCallback(
+    (room, name) => {
+      socketConnection.joinRoom(room, name, role);
+      history.push(`${ROOM}/${room}`);
+    },
+    [socketConnection, history, role]
+  );
+
+  const createRoom = event => {
     event.preventDefault();
-    const { name, pointScale } = this.state;
-    const { role } = this.props;
     // edit backend to take in observer and name, and pointscale
-    return fetch(`https://${API_URL}/generateRoom?pointScale=${pointScale}`)
+    return fetch(`https://${API_URL}/generateRoom?pointScale=${scale}`)
       .then(res => res.json())
-      .then(({ roomName }) => this.joinRoom(roomName, name, role));
+      .then(({ roomName: room }) => joinRoom(room, name, role));
   };
 
-  render() {
-    const { name } = this.state;
-    const { role } = this.props;
-    return (
-      <div className="create-room-content">
-        <h3>Create a Room</h3>
-        <form autoComplete="off" className="uk-form-stacked">
-          <div className="uk-margin">
-            <label className="uk-form-label" htmlFor="form-stacked-text">
-              Name
-            </label>
-            <div className="uk-form-controls">
-              <input
-                className="uk-input"
-                id="form-stacked-text"
-                type="text"
-                value={name}
-                onChange={this.changeName}
-                placeholder=""
-              />
-            </div>
-          </div>
-          <div className="uk-margin">
-            <label className="uk-form-label" htmlFor="form-stacked-text">
-              Role
-            </label>
-            <Role changeRoleAction={this.changeRoleAction} role={role} />
-          </div>
-          <div className="uk-margin">
-            <label className="uk-form-label" htmlFor="form-stacked-select">
-              Point Scale
-            </label>
-            <div className="uk-form-controls">
-              <select
-                className="uk-select"
-                id="form-stacked-select"
-                onChange={this.changeScale}
-                defaultValue={this.state.pointScale}
-              >
-                <option value={SIMPLE}>Simple (1, 2, 3)</option>
-                <option value={FIBONACCI}>Modified Fibonacci (1, 2, 3, 5 ... 100)</option>
-                <option value={T_SHIRT}>T-Shirt Sizes (XXS, XS ... XXL)</option>
-              </select>
-            </div>
-          </div>
-          <div className="uk-margin">
-            <button
-              className="uk-button uk-button-default uk-button-large uk-width-1-1"
-              disabled={!name}
-              onClick={this.createRoom}
-            >
-              Create
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="create-room-content">
+      <Form id="create-room-form" title="Create a Room">
+        <TextField id="create-name" label="Name" value={name} onChange={changeName} />
+        <FormField id="create-role" label="Role">
+          <Role id="create-role" changeRoleAction={changeRoleAction} role={role} />
+        </FormField>
+        <FormField id="create-scale" label="Point Scale">
+          <select
+            className="uk-select"
+            id="create-scale"
+            onChange={changeScale}
+            defaultValue={scale}
+          >
+            <option value={SIMPLE}>Simple (1, 2, 3)</option>
+            <option value={FIBONACCI}>Modified Fibonacci (1, 2, 3, 5 ... 100)</option>
+            <option value={T_SHIRT}>T-Shirt Sizes (XXS, XS ... XXL)</option>
+          </select>
+        </FormField>
+        <SubmitButton id="create-room-submit" text="Create" disabled={!name} onClick={createRoom} />
+      </Form>
+    </div>
+  );
+};
 
 export default connect(
   state => state,

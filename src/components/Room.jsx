@@ -9,9 +9,9 @@ import {
 } from '../sockets/SocketConnection';
 import { POINTER } from '../constants/roles';
 import { successToast } from '../utils/toasts';
-import { Nav } from './Nav';
-import { Scale } from './Scale';
-import { SwitchView } from './SwitchView';
+import Nav from './Nav';
+import Scale from './Scale';
+import SwitchView from './SwitchView';
 
 export class Room extends Component {
   constructor(props) {
