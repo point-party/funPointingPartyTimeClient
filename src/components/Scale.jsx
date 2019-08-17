@@ -20,6 +20,7 @@ const Scale = memo(({ voted, points, scale, selectPointsAction }) => {
                 </li>
               ))}
             </ul>
+            {/* // TODO: switch these to buttons */}
             <a
               className="uk-position-center-left uk-position-small"
               href="#"

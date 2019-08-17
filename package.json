@@ -25,12 +25,13 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "postcss-preset-env": "^6.7.0",
     "prettier": "^1.15.1",
     "webpack": "4.29.6",
     "webpack-cli": "^3.1.2"
   },
   "resolutions": {
-    "browserslist": "4.6.2"
+    "browserslist": "4.6.4"
   },
   "browserslist": {
     "production": [
