@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { VALUES } from '../constants/scales';
+import { SCALES } from '../constants/scales';
 
 const Scale = memo(({ voted, points, scale, selectPointsAction }) => {
   return (
@@ -8,7 +8,7 @@ const Scale = memo(({ voted, points, scale, selectPointsAction }) => {
         <div className="uk-position-relative uk-visible-toggle uk-light" uk-slider="finite: true">
           <div className="uk-slider-container">
             <ul className="uk-slider-items uk-child-width-1-3">
-              {['?', ...VALUES[scale]].map(value => (
+              {['?', ...SCALES[scale].values].map(value => (
                 <li
                   key={`point-${value}`}
                   className={points === value ? 'point-selected' : undefined}

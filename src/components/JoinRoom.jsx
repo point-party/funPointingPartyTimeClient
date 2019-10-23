@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { ROOM } from '../constants/routes';
 import { getRoomNameFromQueryParams } from '../utils/url';
 import { changeRole } from '../appState/reducers/role';
-import Role from './Role';
+import RoleToggle from './RoleToggle';
 import Form from './Form/Form';
 import FormField from './Form/FormField';
 import TextField from './Form/TextField';
-import SubmitButton from './Form/SubmitButton';
+import Button from './Form/Button';
 
 const JoinRoom = ({ changeRole, role }) => {
   const [name, setName] = useState('');
@@ -32,19 +32,22 @@ const JoinRoom = ({ changeRole, role }) => {
   };
 
   return (
-    <div className="join-room-content">
+    <div className="join-room">
       <Form id="join-room-form" title="Join a Room">
-        <TextField label="Room #" value={room} onChange={changeRoom} uppercase />
-        <TextField label="Name" value={name} onChange={changeName} />
-        <FormField id="join-role" label="Role">
-          <Role id="join-role" changeRoleAction={changeRoleAction} role={role} />
-        </FormField>
-        <SubmitButton
-          id="join-room-submit"
-          text="Join"
-          disabled={!name || !room}
-          onClick={joinRoom}
+        <TextField
+          fieldId="room-number"
+          label="Room #"
+          value={room}
+          onChange={changeRoom}
+          uppercase
         />
+        <TextField fieldId="user-name" label="Name" value={name} onChange={changeName} />
+        <FormField fieldId="join-role" label="Role">
+          <RoleToggle fieldId="join-role" onChangeAction={changeRoleAction} role={role} />
+        </FormField>
+        <Button id="join-room-submit" type="submit" disabled={!name || !room} onClick={joinRoom}>
+          Join
+        </Button>
       </Form>
     </div>
   );

@@ -11,7 +11,8 @@ import { POINTER } from '../constants/roles';
 import { successToast } from '../utils/toasts';
 import Nav from './Nav';
 import Scale from './Scale';
-import SwitchView from './SwitchView';
+import Button from './Form/Button';
+import RoleToggle from './RoleToggle';
 
 export class Room extends Component {
   constructor(props) {
@@ -133,11 +134,11 @@ export class Room extends Component {
     return (
       <div className="room-content">
         <div className="room-content__top">
-          <SwitchView
-            changeView={this.changeView}
+          <RoleToggle
+            onChangeAction={this.changeView}
+            role={view}
             pointers={pointers}
             observers={observers}
-            view={view}
           />
           {view === POINTER ? pointersView : observersView}
         </div>
@@ -152,13 +153,14 @@ export class Room extends Component {
               />
             )}
             <div className="room-content__bottom">
-              <button
-                className="uk-button uk-button-default uk-button-large  uk-width-1-1"
+              <Button
+                id="change-vote-button"
                 disabled={points === null}
                 onClick={voted ? this.changeVote : this.vote}
+                className="btn--large"
               >
                 {voted ? 'Change Vote' : 'Vote'}
-              </button>
+              </Button>
             </div>
           </Fragment>
         ) : null}

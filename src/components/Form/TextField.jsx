@@ -1,18 +1,18 @@
 import React, { memo } from 'react';
+import cn from 'classnames';
 import FormField from './FormField';
 
-const TextField = ({ id, label, value, onChange, uppercase }) => (
-  <FormField id={id} label={label}>
-    <div className="uk-form-controls">
-      <input
-        value={value}
-        className={`uk-input ${uppercase ? 'uppercase-input' : ''}`}
-        id={id}
-        type="text"
-        placeholder=""
-        onChange={onChange}
-      />
-    </div>
+const TextField = ({ fieldId, label, value, onChange, uppercase }) => (
+  <FormField fieldId={fieldId} label={label}>
+    <input
+      value={value}
+      className={cn('input', {
+        'uppercase-input': uppercase,
+      })}
+      id={fieldId}
+      type="text"
+      onChange={onChange}
+    />
   </FormField>
 );
 
