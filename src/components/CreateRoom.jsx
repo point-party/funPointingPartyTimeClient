@@ -52,14 +52,16 @@ const CreateRoom = ({ changeRole, socketConnection, role, history }) => {
   return (
     <div className="create-room">
       <Form id="create-room-form" title="Create a Room">
-        <TextField fieldId="user-name" label="Name" value={name} onChange={changeName} />
+        <TextField fieldId="user-name" label="Name" value={name} onChange={changeName} autoFocus />
         <FormField fieldId="create-role" label="Role">
           <RoleToggle fieldId="create-role" onChangeAction={changeRoleAction} role={role} />
         </FormField>
         <FormField fieldId="create-scale" label="Point Scale">
           <select id="create-scale" onChange={changeScale} defaultValue={scale}>
-            {Object.entries(SCALES).map(([scale, { name }]) => (
-              <option value={scale}>{name}</option>
+            {Object.entries(SCALES).map(([scale, { displayName }]) => (
+              <option key={scale} value={scale}>
+                {displayName}
+              </option>
             ))}
           </select>
         </FormField>
