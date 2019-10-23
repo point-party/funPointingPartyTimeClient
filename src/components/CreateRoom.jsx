@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { getApiUrl } from '../utils/api';
-import { SIMPLE, FIBONACCI, T_SHIRT } from '../constants/scales';
-import { ROOM } from '../constants/routes';
-import { changeRole } from '../appState/reducers/role';
-import Role from './Role';
+import RoleToggle from './RoleToggle';
 import Form from './Form/Form';
 import FormField from './Form/FormField';
 import TextField from './Form/TextField';
-import SubmitButton from './Form/SubmitButton';
+import Button from './Form/Button';
+import { getApiUrl } from '../utils/api';
+import { SCALES, SIMPLE } from '../constants/scales';
+import { ROOM } from '../constants/routes';
+import { changeRole } from '../appState/reducers/role';
 
 const API_URL = getApiUrl();
 
@@ -50,25 +50,22 @@ const CreateRoom = ({ changeRole, socketConnection, role, history }) => {
   };
 
   return (
-    <div className="create-room-content">
+    <div className="create-room">
       <Form id="create-room-form" title="Create a Room">
-        <TextField id="create-name" label="Name" value={name} onChange={changeName} />
-        <FormField id="create-role" label="Role">
-          <Role id="create-role" changeRoleAction={changeRoleAction} role={role} />
+        <TextField fieldId="user-name" label="Name" value={name} onChange={changeName} />
+        <FormField fieldId="create-role" label="Role">
+          <RoleToggle fieldId="create-role" onChangeAction={changeRoleAction} role={role} />
         </FormField>
-        <FormField id="create-scale" label="Point Scale">
-          <select
-            className="uk-select"
-            id="create-scale"
-            onChange={changeScale}
-            defaultValue={scale}
-          >
-            <option value={SIMPLE}>Simple (1, 2, 3)</option>
-            <option value={FIBONACCI}>Modified Fibonacci (1, 2, 3, 5 ... 100)</option>
-            <option value={T_SHIRT}>T-Shirt Sizes (XXS, XS ... XXL)</option>
+        <FormField fieldId="create-scale" label="Point Scale">
+          <select id="create-scale" onChange={changeScale} defaultValue={scale}>
+            {Object.entries(SCALES).map(([scale, { name }]) => (
+              <option value={scale}>{name}</option>
+            ))}
           </select>
         </FormField>
-        <SubmitButton id="create-room-submit" text="Create" disabled={!name} onClick={createRoom} />
+        <Button id="create-room-submit" type="submit" disabled={!name} onClick={createRoom}>
+          Create
+        </Button>
       </Form>
     </div>
   );

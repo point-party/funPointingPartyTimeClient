@@ -1,29 +1,31 @@
 import React from 'react';
+import Button from './Form/Button';
 import { POINTER, OBSERVER } from '../constants/roles';
-import ToggleButton from './Form/ToggleButton';
 
-const Role = ({ id, changeRoleAction, role, pointers, observers }) => {
+const RoleToggle = ({ fieldId, onChangeAction, role, pointers, observers }) => {
   const pointerLabel = pointers ? `Pointers (${pointers.length})` : 'Pointer';
   const observerLabel = observers ? `Observers (${observers.length})` : 'Observer';
 
   return (
-    <div id={id} className="uk-button-group uk-width-1-1">
-      <ToggleButton
+    <div id={fieldId} className="btn-group">
+      <Button
         id="pointer-role-toggle"
-        text={pointerLabel}
         value={POINTER}
         selected={role === POINTER}
-        onClick={changeRoleAction}
-      />
-      <ToggleButton
+        onClick={onChangeAction}
+      >
+        {pointerLabel}
+      </Button>
+      <Button
         id="observer-role-toggle"
-        text={observerLabel}
         value={OBSERVER}
         selected={role === OBSERVER}
-        onClick={changeRoleAction}
-      />
+        onClick={onChangeAction}
+      >
+        {observerLabel}
+      </Button>
     </div>
   );
 };
 
-export default Role;
+export default RoleToggle;
