@@ -40,6 +40,7 @@ const JoinRoom = ({ changeRole, role }) => {
           value={room}
           onChange={changeRoom}
           uppercase
+          autoFocus
         />
         <TextField fieldId="user-name" label="Name" value={name} onChange={changeName} />
         <FormField fieldId="join-role" label="Role">
