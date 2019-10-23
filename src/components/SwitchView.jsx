@@ -1,7 +1,7 @@
 import React from 'react';
 import { POINTER, OBSERVER } from '../constants/roles';
 
-export const SwitchView = ({ changeView, pointers, observers, view }) => {
+const SwitchView = ({ changeView, pointers, observers, view }) => {
   const pointersLabel = pointers ? `Pointers (${pointers.length})` : 'Pointer';
   const observersLabel = observers ? `Observers (${observers.length})` : 'Observer';
   let buttonClasses = 'uk-width-1-2 uk-button uk-button-toggle';
@@ -27,3 +27,5 @@ export const SwitchView = ({ changeView, pointers, observers, view }) => {
     </div>
   );
 };
+
+export default SwitchView;

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import UIkit from 'uikit';
+import { connect } from 'react-redux';
 import {
   JOIN_ROOM,
   VOTED,
@@ -7,11 +7,11 @@ import {
   REVEAL_POINTS,
   LEAVE_ROOM,
 } from '../sockets/SocketConnection';
-import { Nav } from './Nav';
-import { Scale } from './Scale';
 import { POINTER } from '../constants/roles';
-import { connect } from 'react-redux';
-import { SwitchView } from './SwitchView';
+import { successToast } from '../utils/toasts';
+import Nav from './Nav';
+import Scale from './Scale';
+import SwitchView from './SwitchView';
 
 export class Room extends Component {
   constructor(props) {
@@ -64,7 +64,7 @@ export class Room extends Component {
       }));
     }
     if (data.event === CLEAR_POINTS) {
-      triggerToast('Clearing Points!', 'success');
+      successToast('Clearing Points!');
       this.setState(prevState => ({
         ...prevState,
         pointers: clearPlayersPoints(prevState.pointers),
@@ -74,7 +74,7 @@ export class Room extends Component {
       }));
     }
     if (data.event === REVEAL_POINTS) {
-      triggerToast('Revealing Points!', 'success');
+      successToast('Revealing Points!');
       this.setState({ showPoints: true });
     }
   };
@@ -106,7 +106,7 @@ export class Room extends Component {
   };
 
   copiedLink = () => {
-    triggerToast('Copied Link!', 'success');
+    successToast('Copied Link!');
   };
 
   leaveRoom = () => {
@@ -152,23 +152,13 @@ export class Room extends Component {
               />
             )}
             <div className="room-content__bottom">
-              {!voted ? (
-                <button
-                  className="uk-button uk-button-default uk-button-large  uk-width-1-1"
-                  disabled={points === null}
-                  onClick={this.vote}
-                >
-                  Vote
-                </button>
-              ) : (
-                <button
-                  className="uk-button uk-button-default uk-button-large  uk-width-1-1"
-                  disabled={points === null}
-                  onClick={this.changeVote}
-                >
-                  Change Vote
-                </button>
-              )}
+              <button
+                className="uk-button uk-button-default uk-button-large  uk-width-1-1"
+                disabled={points === null}
+                onClick={voted ? this.changeVote : this.vote}
+              >
+                {voted ? 'Change Vote' : 'Vote'}
+              </button>
             </div>
           </Fragment>
         ) : null}
@@ -203,14 +193,5 @@ const clearPlayersPoints = players => {
       ...player,
       point: '',
     };
-  });
-};
-
-const triggerToast = (message, type) => {
-  UIkit.notification({
-    message,
-    status: type,
-    pos: 'top-center',
-    timeout: 2000,
   });
 };

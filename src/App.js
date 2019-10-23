@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
-import { Home } from './components/Home';
+import Home from './components/Home';
 import CreateRoom from './components/CreateRoom';
 import JoinRoom from './components/JoinRoom';
 import Room from './components/Room';
-import { Header } from './components/Header';
+import Header from './components/Header';
 import SocketConnection from './sockets/SocketConnection';
-import { CREATE, JOIN, ROOM } from './constants/routes';
+import { HOME, CREATE, JOIN, ROOM } from './constants/routes';
 import './App.css';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
@@ -34,7 +34,7 @@ export default class App extends Component {
           <main>
             <div className="app-content">
               <Switch>
-                <Route exact path="/" component={Home} />
+                <Route exact path={HOME} component={Home} />
                 <Route
                   path={JOIN}
                   render={props => <JoinRoom {...props} socketConnection={socketConnection} />}
