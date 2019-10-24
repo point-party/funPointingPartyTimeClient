@@ -1,199 +1,108 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-  JOIN_ROOM,
-  VOTED,
-  CLEAR_POINTS,
-  REVEAL_POINTS,
-  LEAVE_ROOM,
-} from '../sockets/SocketConnection';
+import { VOTED, CLEAR_POINTS, REVEAL_POINTS } from '../sockets/SocketConnection';
 import { POINTER } from '../constants/roles';
 import { successToast } from '../utils/toasts';
+import Ballot from './Ballot';
 import Nav from './Nav';
-import Scale from './Scale';
 import Button from './Form/Button';
 import RoleToggle from './RoleToggle';
+import ParticipantRow from './ParticipantRow';
+import useSocketMessageReducer from './useSocketMessageReducer';
 
-export class Room extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pointers: [],
-      observers: [],
-      showPoints: false,
-      points: null,
-      voted: false,
-      view: POINTER,
-      pointScale: '',
-    };
-  }
+const Room = ({ socketConnection, history, role }) => {
+  const [pointSelection, setPointSelection] = useState(null);
+  const [view, setView] = useState(POINTER);
+  const [sheetVisibility, setSheetVisibility] = useState(false);
+  const voted = pointSelection !== null;
 
-  componentDidMount() {
-    const { socketConnection } = this.props;
+  const { dispatch, pointers, observers, pointScale, showPoints } = useSocketMessageReducer();
+
+  const changeViewAction = event => setView(event.target.value);
+  const toggleSheetVisibility = () => setSheetVisibility(prevState => !prevState);
+  const voteAction = value => {
+    socketConnection.send(VOTED, value);
+    setPointSelection(value);
+  };
+  const revealPoints = () => {
+    socketConnection.send(REVEAL_POINTS);
+    dispatch({ event: REVEAL_POINTS });
+  };
+  const clearPoints = () => {
+    socketConnection.send(CLEAR_POINTS);
+    dispatch({ event: CLEAR_POINTS });
+  };
+  const copiedLink = () => successToast('Copied Link!');
+  const leaveRoom = () => history.push('/');
+
+  useEffect(() => {
     if (socketConnection.conn) {
       socketConnection.conn.addEventListener('message', e => {
         const data = JSON.parse(e.data);
-        this.decideAction(data);
+        dispatch(data);
       });
     } else {
-      this.props.history.push('/');
+      history.push('/');
     }
-    this.decideAction = this.decideAction.bind(this);
-  }
 
-  componentWillUnmount() {
-    const { socketConnection } = this.props;
-    socketConnection.close();
-  }
+    return () => {
+      socketConnection.close();
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  selectPoints = points => {
-    this.setState({ points });
-  };
+  const pointersList = pointers.map(participant => (
+    <ParticipantRow
+      key={participant.id}
+      view={view}
+      participant={participant}
+      isSelf={socketConnection.id === participant.id}
+      showPoints={showPoints}
+    />
+  ));
+  const observersList = observers.map(participant => (
+    <ParticipantRow
+      key={participant.id}
+      view={view}
+      participant={participant}
+      isSelf={socketConnection.id === participant.id}
+      showPoints={showPoints}
+    />
+  ));
 
-  decideAction = data => {
-    if (data.event === JOIN_ROOM || data.event === LEAVE_ROOM) {
-      this.setState({
-        pointers: data.payload.players,
-        observers: data.payload.observers,
-        pointScale: data.payload.pointScale,
-      });
-    }
-    if (data.event === VOTED) {
-      this.setState(prevState => ({
-        ...prevState,
-        pointers: updatePlayersPoints(prevState.pointers, data.payload),
-      }));
-    }
-    if (data.event === CLEAR_POINTS) {
-      successToast('Clearing Points!');
-      this.setState(prevState => ({
-        ...prevState,
-        pointers: clearPlayersPoints(prevState.pointers),
-        points: null,
-        voted: false,
-        showPoints: false,
-      }));
-    }
-    if (data.event === REVEAL_POINTS) {
-      successToast('Revealing Points!');
-      this.setState({ showPoints: true });
-    }
-  };
-
-  vote = () => {
-    const { socketConnection } = this.props;
-    socketConnection.send(VOTED, this.state.points);
-    this.setState(prevState => ({ voted: !prevState.voted }));
-  };
-
-  changeVote = () => {
-    this.setState(prevState => ({ voted: !prevState.voted }));
-  };
-
-  changeView = event => {
-    this.setState({ view: event.target.value });
-  };
-
-  revealPoints = () => {
-    const { socketConnection } = this.props;
-    socketConnection.send(REVEAL_POINTS);
-    this.setState({ showPoints: true });
-  };
-
-  clearPoints = () => {
-    const { socketConnection } = this.props;
-    socketConnection.send(CLEAR_POINTS);
-    this.setState({ showPoints: false });
-  };
-
-  copiedLink = () => {
-    successToast('Copied Link!');
-  };
-
-  leaveRoom = () => {
-    const { socketConnection } = this.props;
-    socketConnection.close();
-    this.props.history.push('/');
-  };
-
-  render() {
-    const { showPoints, pointers, observers, points, voted, view, pointScale } = this.state;
-    const { role } = this.props;
-    const pointersView = pointers.map(pointer => (
-      <div className="pointer-row" key={pointer.id}>
-        <span>{pointer.name}</span>
-        <span>{showPoints ? pointer.point : pointer.point ? <span uk-icon="check" /> : ''}</span>
+  return (
+    <div className="room-content">
+      <RoleToggle
+        onChangeAction={changeViewAction}
+        role={view}
+        pointers={pointers}
+        observers={observers}
+      />
+      <div className="room-content__participant-list">
+        {view === POINTER ? pointersList : observersList}
       </div>
-    ));
-    const observersView = observers.map(obs => (
-      <div className="pointer-row" key={obs.id}>
-        <span>{obs.name}</span>
-      </div>
-    ));
-
-    return (
-      <div className="room-content">
-        <div className="room-content__top">
-          <RoleToggle
-            onChangeAction={this.changeView}
-            role={view}
-            pointers={pointers}
-            observers={observers}
-          />
-          {view === POINTER ? pointersView : observersView}
-        </div>
-        {role === POINTER ? (
-          <Fragment>
-            {pointScale && (
-              <Scale
-                voted={voted}
-                points={points}
-                scale={pointScale}
-                selectPointsAction={this.selectPoints}
-              />
-            )}
-            <div className="room-content__bottom">
-              <Button
-                id="change-vote-button"
-                disabled={points === null}
-                onClick={voted ? this.changeVote : this.vote}
-                className="btn--large"
-              >
-                {voted ? 'Change Vote' : 'Vote'}
-              </Button>
-            </div>
-          </Fragment>
-        ) : null}
-        <Nav
-          revealPointsAction={this.revealPoints}
-          clearPointsAction={this.clearPoints}
-          leaveRoomAction={this.leaveRoom}
-          copiedLinkAction={this.copiedLink}
-        />
-      </div>
-    );
-  }
-}
+      {role === POINTER && (
+        <Button id="change-vote-button" onClick={toggleSheetVisibility} className="btn--large">
+          {voted ? 'Change Vote' : 'Vote'}
+        </Button>
+      )}
+      <Ballot
+        visible={sheetVisibility}
+        toggleSheetVisibility={toggleSheetVisibility}
+        pointScale={pointScale}
+        pointSelection={pointSelection}
+        voteAction={voteAction}
+      />
+      <Nav
+        revealPointsAction={revealPoints}
+        clearPointsAction={clearPoints}
+        leaveRoomAction={leaveRoom}
+        copiedLinkAction={copiedLink}
+      />
+    </div>
+  );
+};
 
 export default connect(
   state => state,
   {}
 )(Room);
-
-const updatePlayersPoints = (players, update) => {
-  return players.map(player => {
-    if (player.id === update.id) {
-      player.point = update.point;
-    }
-    return player;
-  });
-};
-
-const clearPlayersPoints = players => {
-  return players.map(player => {
-    return {
-      ...player,
-      point: '',
-    };
-  });
-};

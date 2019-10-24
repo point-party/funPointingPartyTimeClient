@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { getRoomName } from '../utils/url';
 import { HOME, ROOM, CREATE, JOIN } from '../constants/routes';
 
+const getPathname = () => window.location.pathname;
+
 const Header = () => {
-  const { pathname } = window.location;
+  const pathname = getPathname();
   const isInRoom = pathname.includes(ROOM);
   const isInCreate = pathname.includes(CREATE);
   const isInJoin = pathname.includes(JOIN);
