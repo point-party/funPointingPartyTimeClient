@@ -9,6 +9,7 @@ import { getApiUrl } from '../utils/api';
 import { SCALES, SIMPLE } from '../constants/scales';
 import { ROOM } from '../constants/routes';
 import { changeRole } from '../appState/reducers/role';
+import { errorToast } from '../utils/toasts';
 
 const API_URL = getApiUrl();
 
@@ -20,7 +21,6 @@ const CreateRoom = ({ changeRole, socketConnection, role, history }) => {
   const changeScale = event => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('event', event.target.value);
     setScale(event.target.value);
   };
 
@@ -43,10 +43,11 @@ const CreateRoom = ({ changeRole, socketConnection, role, history }) => {
 
   const createRoom = event => {
     event.preventDefault();
-    // edit backend to take in observer and name, and pointscale
+    // TODO: edit backend to take in observer and name, and pointscale
     return fetch(`https://${API_URL}/generateRoom?pointScale=${scale}`)
       .then(res => res.json())
-      .then(({ roomName: room }) => joinRoom(room, name, role));
+      .then(({ roomName: room }) => joinRoom(room, name, role))
+      .catch(() => errorToast('Failed to create room'));
   };
 
   return (
