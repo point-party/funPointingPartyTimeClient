@@ -9,7 +9,7 @@ import FormField from './Form/FormField';
 import TextField from './Form/TextField';
 import Button from './Form/Button';
 
-const JoinRoom = ({ changeRole, role }) => {
+const JoinRoom = ({ changeRole, socketConnection, history, role }) => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState(getRoomNameFromQueryParams());
   const changeName = event => setName(event.target.value);
@@ -24,9 +24,7 @@ const JoinRoom = ({ changeRole, role }) => {
     [changeRole]
   );
 
-  const joinRoom = () => {
-    const { room, name } = this.state;
-    const { socketConnection, history, role } = this.props;
+  const joinRoom = event => {
     socketConnection.joinRoom(room.toUpperCase(), name, role);
     history.push(`${ROOM}/${room}`);
   };
