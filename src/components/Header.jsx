@@ -1,12 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { getRoomName } from '../utils/url';
 import { HOME, ROOM, CREATE, JOIN } from '../constants/routes';
 
-const getPathname = () => window.location.pathname;
-
-const Header = () => {
-  const pathname = getPathname();
+const Header = ({ location }) => {
+  const { pathname } = location;
   const isInRoom = pathname.includes(ROOM);
   const isInCreate = pathname.includes(CREATE);
   const isInJoin = pathname.includes(JOIN);
@@ -30,4 +28,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default withRouter(Header);
