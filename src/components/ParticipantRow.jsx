@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { POINTER } from '../constants/roles';
 
 const ParticipantRow = ({ view, participant, isSelf, showPoints }) => {

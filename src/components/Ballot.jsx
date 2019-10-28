@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SCALES } from '../constants/scales';
 
 const Ballot = ({ visible, toggleSheetVisibility, pointScale, voteAction, pointSelection }) => {

@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
+
 import RoleToggle from './RoleToggle';
 import Form from './Form/Form';
 import FormField from './Form/FormField';
 import TextField from './Form/TextField';
 import Button from './Form/Button';
-import { getApiUrl } from '../utils/api';
 import { SCALES, SIMPLE } from '../constants/scales';
 import { ROOM } from '../constants/routes';
 import { changeRole } from '../appState/reducers/role';
+import { getApiUrl } from '../utils/api';
 import { errorToast } from '../utils/toasts';
 
 const API_URL = getApiUrl();

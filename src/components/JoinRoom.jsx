@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { ROOM } from '../constants/routes';
-import { getRoomNameFromQueryParams } from '../utils/url';
-import { changeRole } from '../appState/reducers/role';
-import RoleToggle from './RoleToggle';
+
 import Form from './Form/Form';
 import FormField from './Form/FormField';
 import TextField from './Form/TextField';
 import Button from './Form/Button';
+import RoleToggle from './RoleToggle';
+import { changeRole } from '../appState/reducers/role';
+import { ROOM } from '../constants/routes';
+import { getRoomNameFromQueryParams } from '../utils/url';
 
 const JoinRoom = ({ changeRole, socketConnection, history, role }) => {
   const [name, setName] = useState('');
