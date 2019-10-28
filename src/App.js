@@ -22,35 +22,35 @@ const App = () => {
     (async function wakeUpServer() {
       await fetch(`https://${API_URL}/wakeup`);
     })();
-  }, []) 
+  }, []);
 
   return (
     <Router>
-    <div className="app-container uk-offcanvas-content">
-      <Header />
-      <main>
-        <div className="app-content">
-          <Switch>
-            <Route exact path={HOME} component={Home} />
-            <Route
-              path={JOIN}
-              render={props => <JoinRoom {...props} socketConnection={socketConnection} />}
-            />
-            <Route
-              path={CREATE}
-              render={props => <CreateRoom {...props} socketConnection={socketConnection} />}
-            />
-            <Route
-              path={ROOM}
-              render={props => <Room {...props} socketConnection={socketConnection} />}
-            />
-            <Redirect to="/" />
-          </Switch>
-        </div>
-      </main>
-    </div>
-  </Router>
-  )
-}
+      <div className="app-container uk-offcanvas-content">
+        <Header />
+        <main>
+          <div className="app-content">
+            <Switch>
+              <Route exact path={HOME} component={Home} />
+              <Route
+                path={JOIN}
+                render={props => <JoinRoom {...props} socketConnection={socketConnection} />}
+              />
+              <Route
+                path={CREATE}
+                render={props => <CreateRoom {...props} socketConnection={socketConnection} />}
+              />
+              <Route
+                path={ROOM}
+                render={props => <Room {...props} socketConnection={socketConnection} />}
+              />
+              <Redirect to="/" />
+            </Switch>
+          </div>
+        </main>
+      </div>
+    </Router>
+  );
+};
 
 export default App;

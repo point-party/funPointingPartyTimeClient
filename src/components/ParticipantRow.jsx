@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ReactComponent as Check } from '../svg/check.svg';
+import { ReactComponent as Back } from '../svg/back.svg';
 import { POINTER } from '../constants/roles';
 
 const ParticipantRow = ({ view, participant, isSelf, showPoints }) => {
@@ -9,14 +11,15 @@ const ParticipantRow = ({ view, participant, isSelf, showPoints }) => {
     if (showPoints) {
       rightCol = point;
     } else if (point !== '') {
-      rightCol = <span uk-icon="check" />;
+      rightCol = <Check title="participant-has-voted-icon" className="icon icon--green" />;
     }
   }
 
   return (
     <div className="participant-row" key={id}>
       <span>
-        {name} {isSelf && <span uk-icon="chevron-double-left" />}
+        {name}{' '}
+        {isSelf && <Back title="self-indicator-icon" className="icon icon--blue icon--small" />}
       </span>
       <span>{rightCol}</span>
     </div>

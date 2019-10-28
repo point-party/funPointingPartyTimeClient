@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
+import { ReactComponent as BackIcon } from '../svg/back.svg';
+import { ReactComponent as MenuIcon } from '../svg/menu.svg';
 import { getRoomName } from '../utils/url';
 import { HOME, ROOM, CREATE, JOIN } from '../constants/routes';
 
@@ -13,11 +15,15 @@ const Header = ({ location }) => {
 
   const backArrow = (
     <Link to={HOME}>
-      <span uk-icon="icon: arrow-left; ratio: 1.5" />
+      <BackIcon title="back-button" className="icon" />
     </Link>
   );
   const hamburgerMenu = (
-    <span uk-toggle="target: #offcanvas-nav" uk-icon="icon: menu; ratio: 1.5" />
+    <MenuIcon
+      title="open-menu-button"
+      className="icon icon--large"
+      uk-toggle="target: #offcanvas-nav"
+    />
   );
 
   return (

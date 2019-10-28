@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ReactComponent as Close } from '../svg/close.svg';
+import { ReactComponent as Check } from '../svg/check.svg';
 import { SCALES } from '../constants/scales';
 
 const Ballot = ({ visible, toggleSheetVisibility, pointScale, voteAction, pointSelection }) => {
@@ -11,7 +13,7 @@ const Ballot = ({ visible, toggleSheetVisibility, pointScale, voteAction, pointS
   return (
     <ol className={ballotClassList} onClick={toggleSheetVisibility} aria-label="ballot">
       <li id="close-ballot" className="ballot-list-item ballot-list-item--close">
-        <span /> <span uk-icon="close" />
+        <span /> <Close title="close-ballot-button" className="icon" />
       </li>
       {['?', ...SCALES[pointScale].values].map(value => {
         const selected = pointSelection === value;
@@ -25,7 +27,7 @@ const Ballot = ({ visible, toggleSheetVisibility, pointScale, voteAction, pointS
             className={itemClassList}
             onClick={() => voteAction(value)}
           >
-            {value} {selected && <span uk-icon="check" />}
+            {value} {selected && <Check title="current-selection" className="icon icon--green" />}
           </li>
         );
       })}
