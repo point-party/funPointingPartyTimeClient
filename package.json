@@ -5,15 +5,12 @@
   "dependencies": {
     "@material-ui/core": "^3.1.0",
     "@material-ui/icons": "^3.0.1",
-    "@mdi/font": "^2.7.94",
-    "@mdi/js": "^2.8.94",
-    "@mdi/react": "^1.0.1",
     "classnames": "^2.2.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^6.0.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "3.0.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
     "redux": "^4.0.1",
     "uikit": "^3.0.0-rc.16",
     "uuid": "^3.3.2"
@@ -23,16 +20,29 @@
     "build": "react-scripts build",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "precommit": "NODE_ENV=production lint-staged"
   },
   "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.0.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
     "postcss-preset-env": "^6.7.0",
-    "prettier": "^1.15.1",
-    "webpack": "4.29.6",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^2.0.0",
+    "webpack": "4.41.0",
     "webpack-cli": "^3.1.2"
   },
   "resolutions": {
-    "browserslist": "4.6.4"
+    "browserslist": "4.7.2"
   },
   "browserslist": {
     "production": [

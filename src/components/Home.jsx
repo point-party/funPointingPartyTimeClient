@@ -1,6 +1,7 @@
 import React from 'react';
-import { CREATE, JOIN } from '../constants/routes';
+
 import LinkButton from './Form/LinkButton';
+import { CREATE, JOIN } from '../constants/routes';
 
 const Home = () => {
   return (

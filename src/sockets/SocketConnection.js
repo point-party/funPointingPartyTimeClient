@@ -1,5 +1,6 @@
 import { createId } from '../utils/uuid';
 import { getApiUrl } from '../utils/api';
+
 const API_URL = getApiUrl();
 
 export const JOIN_ROOM = 'JOIN_ROOM';

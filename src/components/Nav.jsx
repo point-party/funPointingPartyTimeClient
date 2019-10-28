@@ -5,6 +5,7 @@ import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 import { getRoomName } from '../utils/url';
 
 const Nav = ({ revealPointsAction, clearPointsAction, leaveRoomAction, copiedLinkAction }) => {

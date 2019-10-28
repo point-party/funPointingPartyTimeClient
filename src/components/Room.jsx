@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { VOTED, CLEAR_POINTS, REVEAL_POINTS } from '../sockets/SocketConnection';
-import { POINTER } from '../constants/roles';
-import { successToast } from '../utils/toasts';
-import Ballot from './Ballot';
+
 import Nav from './Nav';
+import Ballot from './Ballot';
 import Button from './Form/Button';
 import RoleToggle from './RoleToggle';
 import ParticipantRow from './ParticipantRow';
 import useSocketMessageReducer from './useSocketMessageReducer';
+import { POINTER } from '../constants/roles';
+import { VOTED, CLEAR_POINTS, REVEAL_POINTS } from '../sockets/SocketConnection';
+import { successToast } from '../utils/toasts';
 
 const Room = ({ socketConnection, history, role }) => {
   const [pointSelection, setPointSelection] = useState(null);
